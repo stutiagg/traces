@@ -1,11 +1,15 @@
 import TripCard from './TripCard'
 import './TripGallery.css'
 
-function TripGallery({trips}){
+function TripGallery({trips, setSelected}){
+
+    function handleCardClick(trip){
+        setSelected(trip);
+    }
 
     function TripCardRender(){
     const tripCardArray = trips.map((trip) => 
-    {return <TripCard trip = {trip}/>})
+    {return <TripCard trip = {trip} onClick = {() => handleCardClick(trip)} />})
 
     return tripCardArray
 }

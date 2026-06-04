@@ -1,10 +1,10 @@
 import pic from './assets/picture1.jpg'
 import './TripCard.css'
-function TripCard({trip}){
+function TripCard({trip, onClick}){
 
 
     return(
-        <div className="trip-card">
+        <div className="trip-card" onClick={onClick}>
             <img src= { trip.cover } />
             <div className="trip-details">
             <h2 className="trip-name">{trip.name}</h2>

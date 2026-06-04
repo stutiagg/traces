@@ -13,8 +13,6 @@ function VisitCard(){
         </div>
         </div>
     )
-
-
 }
 
 export default VisitCard

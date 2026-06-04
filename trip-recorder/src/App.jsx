@@ -11,6 +11,7 @@ function App() {
 
   const [createMode, setCreateMode] = useState(false);
   const [trips, setTrips] = useState([]);
+  const [selected, setSelected] = useState(null);
 
   return (
   
@@ -19,10 +20,17 @@ function App() {
 
 
     <div className='main-content'>
+      {!selected && (
+      <>
       <Navbar />
       <Map />
-      <TripGallery trips={trips}/>
-      {/* <TripPage /> */}
+      <TripGallery trips={trips} setSelected={setSelected}/>
+      </>
+      )}
+
+      {selected && (
+        <TripPage  selected = {selected} trips={trips} setSelected={setSelected} setTrips={setTrips}/>
+      )}
 
       {createMode && (
         <CreateTripForm setCreateMode={setCreateMode} setTrips={setTrips} trips={trips} />

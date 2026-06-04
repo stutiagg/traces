@@ -45,7 +45,7 @@
     width: 100%;
 }
 
-.add-trip{
+.add-trip-btn{
     width: 100%;
     padding: 0.6rem 0.8rem;
     border-radius: 1rem;
@@ -58,7 +58,7 @@
     transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
 }
 
-.add-trip:hover{
+.add-trip-btn:hover{
     background-color: rgba(255, 255, 255, 0.18);
     transform: translateY(-1px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);

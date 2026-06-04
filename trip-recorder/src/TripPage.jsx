@@ -1,26 +1,34 @@
 import VisitGallery from './VisitGallery'
+import { useState } from 'react';
 
 import './TripPage.css'
 import header from './assets/picture1.jpg'
-function TripPage(){
+function TripPage({selected, setSelected, trips, setTrips}){
+
+    const [desEdit, setDesEdit] = useState(true);
+
+
     return(
         <div  className='trip-page'>
         <div className='header'>
-            <img className='header-img' src = {header}></img>
+            <img className='header-img' src = {selected.cover}></img>
             <div>
                     <div className='trip-title'>
-                        <h1>Japan Trip</h1>
+                        <h1>{selected.name}</h1>
                         <div className='divider'></div>
-                        <h2 className='dates'>Apr 2026 - June 2026</h2>
+                        <h2 className='dates'>{selected.start} - {selected.end}</h2>
                     </div> 
         </div>
         </div>
         <div className='description-box'>
             <h3 className='section-heading'>Description</h3>
             <div className='divider'></div>
-            <div className='description'>
-            Two unforgettable weeks exploring Japan's blend of tradition and modern life. From the busy streets of Tokyo and the neon lights of Shibuya to the peaceful temples of Kyoto and the breathtaking views around Mount Fuji, every day brought a new adventure. The trip was filled with amazing food, scenic train rides, historic landmarks, and moments that will be remembered for years to come.
-            </div>
+
+            {desEdit && (<input type="text" placeholder='Enter the Description' onKeyDown={(e)=> {if(e.key=== "Enter"){setDesEdit(false)}}}  value={(trips.map((trip) => {if(trip === selected){return trip}})).description} onChange={(e)=> setTrips([...trips, {...(trips.map((trip) => {if(trip === selected){return trip}})), description: e.target.value}])}/>)
+}
+            {!desEdit && (<div className='description'>
+                {selected.description}
+            </div>)}
         </div>
 
         <VisitGallery />

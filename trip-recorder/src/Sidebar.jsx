@@ -9,7 +9,7 @@ function Sidebar({setCreateMode}){
                 <button>Feed</button>
                 <button>Map</button>
                 <div className="add-trip-wrapper">
-                    <button className="add-trip" onClick={() => { setCreateMode(true) }}>ADD TRIP</button>
+                    <button className="add-trip-btn" onClick={() => { setCreateMode(true) }}>ADD TRIP</button>
                 </div>
             </div>
         </div>
