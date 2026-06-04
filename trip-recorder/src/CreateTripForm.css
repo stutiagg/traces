@@ -1,0 +1,28 @@
+.trip-form{
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    max-height: 500px ;
+    background-color: var(--bg);
+    border-radius: 1rem;
+    padding: 10px;
+}
+
+.trip-form input{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.trip-form-overlay{
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+
+    z-index: 1000;
+}

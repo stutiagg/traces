@@ -1,0 +1,9 @@
+#map{
+    width: 65vw;
+    height: 60vh;
+    background-color: var(--card);
+}
+
+.leaflet-container{
+    height: 100%;
+}

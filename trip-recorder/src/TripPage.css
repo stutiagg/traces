@@ -1,0 +1,54 @@
+.trip-page{
+    background-color: var(--bg);
+    text-align: left;
+}
+
+.divider{
+    border-top: 1px solid var(--accent);
+}
+
+.dates{
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--text-muted);
+}
+
+.header{
+    position: relative;
+}
+
+.header-img{
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    position:relative;
+}
+
+.trip-title{
+    padding: 0 1rem 0 1rem;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 1),
+        rgba(0, 0, 0, 0)
+    );
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.description-box{
+    background-color: var(--bg-tertiary);
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    font-size: 16px;
+}
+
+.section-heading{
+    margin: 0 0 0.5rem 0;
+}
+
+.description{
+    color: var(--text)
+}

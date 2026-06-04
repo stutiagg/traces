@@ -1,0 +1,8 @@
+.visit-gallery{
+    width: 50%;
+    height: 50%;
+    background-color: var(--bg-tertiary);
+    margin-top: 1rem;
+    border-radius: 1rem;
+    padding: 1rem;
+}

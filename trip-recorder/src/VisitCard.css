@@ -1,0 +1,48 @@
+.card-element{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 520px;
+    min-height: 120px;
+    border-radius: 1rem;
+    margin-top: 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    padding: 0.9rem;
+    background-color: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    overflow: hidden;
+}
+
+.card-element:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.cover-img{
+    width: 160px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 1rem;
+    flex-shrink: 0;
+}
+
+.visit-details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.visit-details > div:first-child{
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.visit-details > div:last-child{
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}

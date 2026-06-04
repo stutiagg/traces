@@ -1,0 +1,24 @@
+.navbar{
+    padding: 0.5rem 1rem;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top:0;
+    background-color: var(--bg);
+
+}
+
+
+.profile{
+    text-align: end;
+    
+}
+
+.profile > span{
+    background-color: var(--accent);
+    padding: 0.5rem 0.75rem;
+    border-radius: 1rem;
+    color: var(--bg);
+    border: 1px solid;
+    font-weight: 500;
+}
