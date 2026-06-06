@@ -9,7 +9,7 @@ function TripGallery({trips, setSelected}){
 
     function TripCardRender(){
     const tripCardArray = trips.map((trip) => 
-    {return <TripCard trip = {trip} onClick = {() => handleCardClick(trip)} />})
+    {return <TripCard key = {trip.id} trip = {trip} onClick = {() => handleCardClick(trip)} />})
 
     return tripCardArray
 }

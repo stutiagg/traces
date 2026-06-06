@@ -26,6 +26,17 @@
     flex-shrink: 0;
 }
 
+.cover-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.cover-wrapper input[type="file"]{
+    width: auto;
+}
+
 .visit-details{
     display: flex;
     flex-direction: column;
