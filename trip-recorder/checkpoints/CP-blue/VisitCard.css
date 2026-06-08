@@ -1,5 +1,4 @@
 .card-element{
-    position: relative;
     display: flex;
     align-items: flex-start;
     gap: 1.5rem;
@@ -12,7 +11,6 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     transition: transform 0.18s ease, box-shadow 0.18s ease;
     overflow: hidden;
-    box-sizing: border-box;
 }
 
 .card-element:hover{
@@ -37,25 +35,13 @@
     background-color: var(--bg);
 }
 
-.visit-ellipsis{
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    z-index: 10;
-    color: var(--text);
-    background-color: rgba(0, 0, 0, 0.45);
-    padding: 0.35rem;
-    border-radius: 0.45rem;
-    cursor: pointer;
-}
-
 .cover-input{
     font-size: 0.9rem;
     color: var(--text);
     opacity: 0.88;
     border: none;
     background: transparent;
-    width: 96%;
+    width: 100%;
 }
 
 .visit-details{
@@ -68,8 +54,8 @@
 }
 
 .visit-details input{
-    width: calc(100% - 1.5rem);
-    padding: 0.65rem 0.8rem;
+    width: 100%;
+    padding: 0.85rem 1rem;
     border-radius: var(--radius-md);
     border: 1px solid rgba(148, 163, 184, 0.25);
     background-color: rgba(255, 255, 255, 0.05);
@@ -86,14 +72,4 @@
 .visit-details input:focus{
     border-color: rgba(56, 189, 248, 0.85);
     box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.08);
-}
-
-.card-element .menu{
-    position: absolute;
-    top: 2.2rem;
-    right: 0.5rem;
-    z-index: 30;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }

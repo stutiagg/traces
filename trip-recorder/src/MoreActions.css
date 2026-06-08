@@ -1,0 +1,16 @@
+.menu{
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    width: 80px;
+    background-color: var(--bg-secondary);
+}
+
+.menu > button{
+    background-color: transparent;
+    border: none;
+}
+
+.menu > button:hover{
+    color: var(--text-muted);
+}

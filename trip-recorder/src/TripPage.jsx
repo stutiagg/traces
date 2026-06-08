@@ -17,7 +17,7 @@ function TripPage({ selected, setSelected, trips, setTrips }) {
             return trip ;
         });
 
-        // console.log(newTrips);
+        //console.log(newTrips);
         setTrips(newTrips);
 
         const newSelected = newTrips.find((trip) => trip.id === selected.id);

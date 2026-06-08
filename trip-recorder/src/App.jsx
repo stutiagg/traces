@@ -5,13 +5,16 @@ import TripGallery from './TripGallery'
 import CreateTripForm from './CreateTripForm'
 import Sidebar from './Sidebar'
 import TripPage from './TripPage'
+import MoreActionsMenu from './TripActionsMenu'
 import './App.css'
 
 function App() {
 
-  const [createMode, setCreateMode] = useState(false);
+  const [createMode, setCreateMode] = useState(null);
   const [trips, setTrips] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [editingTrip, setEditingTrip] = useState(null);
+  
 
   return (
   
@@ -24,7 +27,7 @@ function App() {
       <>
       <Navbar />
       <Map />
-      <TripGallery trips={trips} setSelected={setSelected}/>
+      <TripGallery trips={trips} setSelected={setSelected} setTrips={setTrips} setCreateMode={setCreateMode} setEditingTrip={setEditingTrip}/>
       </>
       )}
 
@@ -33,8 +36,11 @@ function App() {
       )}
 
       {createMode && (
-        <CreateTripForm setCreateMode={setCreateMode} setTrips={setTrips} trips={trips} />
+        <CreateTripForm mode={createMode} setCreateMode={setCreateMode} setTrips={setTrips} trips={trips} trip={editingTrip}/>
       )}
+
+      
+
     </div>
   </div>
 )

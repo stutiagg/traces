@@ -1,7 +1,7 @@
 import TripCard from './TripCard'
 import './TripGallery.css'
 
-function TripGallery({trips, setSelected}){
+function TripGallery({trips, setSelected, setTrips, setCreateMode, setEditingTrip}){
 
     function handleCardClick(trip){
         setSelected(trip);
@@ -9,7 +9,7 @@ function TripGallery({trips, setSelected}){
 
     function TripCardRender(){
     const tripCardArray = trips.map((trip) => 
-    {return <TripCard key = {trip.id} trip = {trip} onClick = {() => handleCardClick(trip)} />})
+    {return <TripCard key = {trip.id} trip = {trip} trips={trips} setTrips={setTrips} setCreateMode={setCreateMode} setEditingTrip={setEditingTrip} onClick = {() => handleCardClick(trip)} />})
 
     return tripCardArray
 }

@@ -2,8 +2,12 @@
     width: 65vw;
     height: 60vh;
     background-color: var(--card);
+    border-radius: var(--radius-lg);
 }
 
 .leaflet-container{
     height: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
 }
