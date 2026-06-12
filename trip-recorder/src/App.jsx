@@ -6,6 +6,7 @@ import CreateTripForm from './CreateTripForm'
 import Sidebar from './Sidebar'
 import TripPage from './TripPage'
 import MoreActionsMenu from './TripActionsMenu'
+
 import './App.css'
 
 function App() {
@@ -20,13 +21,14 @@ function App() {
   
   <div className='layout'>
     <Sidebar setCreateMode={setCreateMode} />
+    
 
 
     <div className='main-content'>
       {!selected && (
       <>
       <Navbar />
-      <Map />
+      <Map trips={trips}/>
       <TripGallery trips={trips} setSelected={setSelected} setTrips={setTrips} setCreateMode={setCreateMode} setEditingTrip={setEditingTrip}/>
       </>
       )}

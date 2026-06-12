@@ -2,7 +2,7 @@
     width: 42vw;
     max-width: 840px;
     background-color: var(--bg-tertiary);
-    margin-top: 1.5rem;
+    margin-top: 0;
     border-radius: var(--radius-lg);
     padding: 1.25rem;
     display: flex;
@@ -49,5 +49,42 @@
 @media (max-width: 780px) {
     .visit-gallery{
         padding: 1rem;
+    }
+}
+
+/* Wrapper to place the gallery and the side map next to each other */
+.visit-gallery-wrapper{
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-top: 1.5rem; /* ensure wrapper sets top spacing so map and gallery align */
+}
+
+/* Side map styles matching other components */
+.side-map{
+    flex: 1 1 0;
+    min-width: 260px;
+    height: 420px; /* fixed height */
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-map .map-inner{
+    flex: 1 1 auto;
+    background-color: rgba(255,255,255,0.02);
+}
+
+@media (max-width: 780px) {
+    .visit-gallery-wrapper{
+        flex-direction: column;
+    }
+    .side-map{
+        height: 220px;
+        min-width: auto;
     }
 }

@@ -1,13 +1,24 @@
 import './VisitGallery.css'
 import VisitCard from './VisitCard'
+import { useState } from 'react';
+import TripMap from './TripMap';
 function VisitGallery({ selected, setSelected, trips, setTrips }){
 
+    const [isEditing, setIsEditing] = useState(false);
+
     function handleAddVisit(){
+
+        setIsEditing(true);
+        
         const newVisit = {
             id: Date.now(),
             cover:"",
-            location:"",
-            date:""
+            location:{
+                name:"",
+                lat:"",
+                lon:""
+            },
+            date:"",
         }
 
         const newTrips = trips.map((trip)=>{
@@ -22,10 +33,21 @@ function VisitGallery({ selected, setSelected, trips, setTrips }){
         setSelected(newSelected);
     }
 
+    // function MapRender(){
+    //     const MapMarkers = selected.visits.map((visit) => {
+    //         return <TripMap name={visit.location.name} lat={visit.location.lat} lon={visit.location.lon}/>
+    //     })
+        
+    //     return MapMarkers
+    // }
+
+    console.log("Selected trip:", selected);
+console.log("Visits:", selected.visits);
     // console.log(trips);
 
 
     return(
+        <div className='visit-gallery-wrapper'>
         <div className='visit-gallery'>
             <div className='visit-gallery-header'>
             <h2>Visit Gallery</h2>
@@ -38,8 +60,16 @@ function VisitGallery({ selected, setSelected, trips, setTrips }){
         trips={trips}
         setTrips={setTrips}
         selected={selected}
-        setSelected={setSelected}/>
+        setSelected={setSelected}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}/>
     ))}
+        </div>
+        <aside className="side-map" aria-hidden={false}>
+            <div className="map-inner">
+                <TripMap trips={trips} selected={selected}/>
+            </div>
+        </aside>
         </div>
     )
 }
