@@ -2,7 +2,6 @@ import VisitGallery from './VisitGallery';
 import { useState } from 'react';
 
 import './TripPage.css';
-import header from './assets/picture1.jpg';
 
 function TripPage({ selected, setSelected, trips, setTrips }) {
     const [description, setDescription] = useState(selected.description);

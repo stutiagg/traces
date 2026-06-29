@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './VisitCard.css'
-import cover from './assets/picture1.jpg'
+
 import { EllipsisVertical } from 'lucide-react'
 import VisitActionsMenu from './VisitActionsMenu'
 import LocationSearch from './LocationSearch'
@@ -98,9 +98,7 @@ function VisitCard({visit, setTrips, setSelected, selected, trips, isEditing, se
                     {isEditing ? <input value={visit.date} type="text" placeholder='Add Date' onChange={(e)=>handleChangeDate(e)} /> : <div className="field-display">{visit.date}</div>}
                     {isEditing && <button className="save-btn" onClick={handleSave}>Save</button>}
                 </div>
-                <div className="map-container">
-                    
-                </div>
+                
             </div>
         </div>
     )}

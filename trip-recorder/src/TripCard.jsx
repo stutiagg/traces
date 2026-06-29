@@ -1,4 +1,4 @@
-import pic from './assets/picture1.jpg'
+
 import { EllipsisVertical } from 'lucide-react'
 import './TripCard.css'
 import TripActionsMenu from './TripActionsMenu'
