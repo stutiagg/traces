@@ -3,7 +3,8 @@ import supabase from "../config/supabase.js";
 export const getTrips = async (req, res) => {
     const { data, error } = await supabase
     .from("trips")
-    .select("*");
+    .select("*")
+    .eq('user_id', req.userId);
 
     if (error) return res.status(500).json(error);
 
@@ -13,7 +14,9 @@ export const getTrips = async (req, res) => {
 export const addTrips = async (req, res) => {
     const {data, error} = await supabase
     .from("trips")
-    .insert([req.body])
+    .insert([{
+        ...req.body,
+        user_id: req.userId}])
     .select();
 
     if (error) return res.status(500).json(error);
@@ -23,10 +26,15 @@ export const addTrips = async (req, res) => {
 
 export const deleteTrips = async (req, res) => {
     console.log(req.params.id);
-    const {error} = await supabase
+    const {data, error} = await supabase
     .from("trips")
     .delete()
-    .eq('id', req.params.id);
+    .eq('id', req.params.id)
+    .eq('user_id', req.userId);
+
+    if (req.userId !== data) return res.status(403).json({
+        message: "Not authorized to delete this trip."
+    });
 
     if (error) return res.status(500).json(error);
 
@@ -52,13 +60,16 @@ export const updateTrips = async (req, res) => {
         start_date,
         end_date,
         cover_url,
-        description,
-        user_id
+        description
     })
     .eq('id', req.params.id)
+    .eq('user_id', req.userId)
     .select();
+
+    if (req.userId !== data) return res.status(403).json({
+        message: "Not authorized to update this trip."
+    });
 
     if (error) return res.status(500).json(error);
 
-    res.status(201).json(data);
-}
+    res.status(200).json(data); }

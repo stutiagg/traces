@@ -1,14 +1,15 @@
 import express from "express";
 import { getTrips, addTrips, deleteTrips, updateTrips } from "../controllers/tripControllers.js"
+import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get('/', getTrips);
+router.get('/', authMiddleware, getTrips);
 
-router.post('/', addTrips);
+router.post('/', authMiddleware, addTrips);
 
-router.delete('/:id', deleteTrips);
+router.delete('/:id', authMiddleware, deleteTrips);
 
-router.put('/:id', updateTrips);
+router.put('/:id', authMiddleware, updateTrips);
 
 export default router;

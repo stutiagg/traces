@@ -13,7 +13,9 @@ export const getVisits = async (req, res) => {
 export const addVisits = async (req, res) => {
     const {data, error} = await supabase
     .from("visits")
-    .insert([req.body])
+    .insert([{
+        ...req.body,
+        trip_id: req.params.tripId}])
     .select();
 
     if (error) return res.status(500).json(error);

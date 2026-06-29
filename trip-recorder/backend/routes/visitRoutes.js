@@ -1,7 +1,14 @@
 import express from "express";
-import { getVisits, addVisits, deleteVisits, updateVisits } from "../controllers/tripControllers.js"
+import { getVisits, addVisits, deleteVisits, updateVisits } from "../controllers/visitControllers.js"
+import authMiddleware from "../middleware/authMiddleware.js";
+import tripAuth from "../middleware/tripMiddleware.js";
 
-const router = express.Router();
+const router = express.Router({
+    mergeParams: true
+});
+
+router.use(authMiddleware);
+router.use(tripAuth);
 
 router.get('/', getVisits);
 
