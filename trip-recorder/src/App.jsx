@@ -1,11 +1,16 @@
-import { useState } from 'react'
-import Navbar from './Navbar'
-import Map from './Map'
-import TripGallery from './TripGallery'
+import { useState, useEffect } from 'react'
 import CreateTripForm from './CreateTripForm'
 import Sidebar from './Sidebar'
 import TripPage from './TripPage'
 import MoreActionsMenu from './TripActionsMenu'
+
+
+
+import { Routes, Route } from "react-router-dom";
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup'
+import API from './api'
 
 import './App.css'
 
@@ -15,36 +20,84 @@ function App() {
   const [trips, setTrips] = useState([]);
   const [selected, setSelected] = useState(null);
   const [editingTrip, setEditingTrip] = useState(null);
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+  async function fetchTrips() {
+    try {
+      const response = await API.get("/trips" , {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+}); 
+      setTrips(response.data);
+    } catch (err) {
+      console.log(err.response?.data);
+    }
+  }
+
+  fetchTrips();
+}, []);
+
+
   
 
   return (
   
-  <div className='layout'>
-    <Sidebar setCreateMode={setCreateMode} />
-    
+  <div className="layout">
+  <Sidebar setCreateMode={setCreateMode} />
 
+  <div className="main-content">
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Home
+            trips={trips}
+            setTrips={setTrips}
+            setCreateMode={setCreateMode}
+            setEditingTrip={setEditingTrip}
+          />
+        }
+      />
 
-    <div className='main-content'>
-      {!selected && (
-      <>
-      <Navbar />
-      <Map trips={trips}/>
-      <TripGallery trips={trips} setSelected={setSelected} setTrips={setTrips} setCreateMode={setCreateMode} setEditingTrip={setEditingTrip}/>
-      </>
-      )}
+      <Route
+        path="/trips/:id"
+        element={
+          <TripPage
+            trips={trips}
+            setTrips={setTrips}
+          />
+        }
+      />
 
-      {selected && (
-        <TripPage  selected = {selected} trips={trips} setSelected={setSelected} setTrips={setTrips}/>
-      )}
+      <Route
+        path="/login"
+        element = {
+          <Login />
+        }
+      />
 
-      {createMode && (
-        <CreateTripForm mode={createMode} setCreateMode={setCreateMode} setTrips={setTrips} trips={trips} trip={editingTrip}/>
-      )}
+      <Route
+        path="/register"
+        element = {
+          <Signup />
+        }
+      />
+    </Routes>
 
-      
-
-    </div>
+    {createMode && (
+      <CreateTripForm
+        mode={createMode}
+        setCreateMode={setCreateMode}
+        setTrips={setTrips}
+        trips={trips}
+        trip={editingTrip}
+      />
+    )}
   </div>
+</div>
 )
 }
 

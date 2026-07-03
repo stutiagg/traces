@@ -7,7 +7,7 @@ const tripAuth = async (req, res, next) => {
     .eq("id", req.params.tripId)
     .eq("user_id", req.userId)
     .single();
-
+    
   if (error || !trip) {
     return res.status(403).json({
       message: "Unauthorized"

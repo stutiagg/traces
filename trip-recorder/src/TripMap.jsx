@@ -1,27 +1,27 @@
 import "./Map.css"
 import { useState } from "react"
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet'
-function TripMap({ trips, selected }){
+function TripMap({ visits }){
 
-    const positions = selected.visits
+    const positions = visits
   .filter(                              //filters out visits with invalid entries
     visit =>
-      visit.location.lat &&
-      visit.location.lon
+      visit.latitude &&
+      visit.longitude
   )
   .map((visit) => [                     //actual mapping of the visits 
-    visit.location.lat,
-    visit.location.lon
+    visit.latitude,
+    visit.longitude
   ]);
 
      function MarkerRender(){
-        const MapMarkers = selected.visits.map((visit) => {
+        const MapMarkers = visits.map((visit) => {
   
             return (
             <>
-            <Marker key={visit.id} position={[visit.location.lat, visit.location.lon]}>
+            <Marker key={visit.id} position={[visit.latitude, visit.longitude]}>
                 <Popup>
-                    {visit.location.name}
+                    {visit.name}
                 </Popup>
             </ Marker>
             </>

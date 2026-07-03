@@ -8,7 +8,6 @@ import {
 function LocationSearch({ value, onChange, placeholder }){
 
     const Key = import.meta.env.VITE_GEOAPIFY_KEY;
-    console.log("API Key:", Key);
 
   
 
@@ -18,16 +17,16 @@ function LocationSearch({ value, onChange, placeholder }){
             value: {
                 name: feature.properties.formatted,
                 lat: feature.properties.lat,
-                lon: feature.properties.lon
+                long: feature.properties.lon
             }
         }
     });
+    
 };
 
 
-    const onSuggestionsChange = (list) => {
-    console.log('Suggestions:', list);
-    };
+    // const onSuggestionsChange = (list) => {
+    // };
 
 
     return(
@@ -39,7 +38,7 @@ function LocationSearch({ value, onChange, placeholder }){
                 lang="en"
                 addDetails={true}
                 placeSelect={onPlaceSelected}
-                suggestionsChange={onSuggestionsChange} 
+                // suggestionsChange={onSuggestionsChange} 
                 />
         </GeoapifyContext>
     ) 

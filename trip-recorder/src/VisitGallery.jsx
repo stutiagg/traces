@@ -1,9 +1,45 @@
 import './VisitGallery.css'
 import VisitCard from './VisitCard'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TripMap from './TripMap';
-function VisitGallery({ selected, setSelected, trips, setTrips }){
+import { useParams } from 'react-router-dom';
+import API from './api';
 
+function VisitGallery({ setSelected, trips, setTrips }){
+
+    const { id } = useParams();
+
+    const selected = trips.find(
+    (trip) => trip.id.toString() === id
+    );
+
+    if (!selected) {
+    return <h2>Trip not found.</h2>;
+    }
+
+    const [visits, setVisits] = useState([]);
+
+    useEffect(() => {
+  async function fetchVisits() {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await API.get(
+        `/trips/${id}/visits`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setVisits(response.data);
+    } catch (err) {
+      console.log(err.response?.data);
+    }
+  }
+
+  fetchVisits();
+}, [id]);
     const [isEditing, setIsEditing] = useState(false);
 
     function handleAddVisit(){
@@ -12,25 +48,14 @@ function VisitGallery({ selected, setSelected, trips, setTrips }){
         
         const newVisit = {
             id: Date.now(),
+            name:"",
             cover:"",
-            location:{
-                name:"",
-                lat:"",
-                lon:""
-            },
-            date:"",
+            date:null,
+            latitude:"",
+            longitude:""
         }
 
-        const newTrips = trips.map((trip)=>{
-            if(trip === selected){
-                return {...trip, visits: [...trip.visits, newVisit]}
-            }
-            return trip
-        })
-
-        setTrips(newTrips);
-        const newSelected = newTrips.find((trip) => trip.id === selected.id);
-        setSelected(newSelected);
+        setVisits((prev) => [...prev, newVisit]);
     }
 
     // function MapRender(){
@@ -41,11 +66,6 @@ function VisitGallery({ selected, setSelected, trips, setTrips }){
     //     return MapMarkers
     // }
 
-    console.log("Selected trip:", selected);
-console.log("Visits:", selected.visits);
-    // console.log(trips);
-
-
     return(
         <div className='visit-gallery-wrapper'>
         <div className='visit-gallery'>
@@ -54,20 +74,21 @@ console.log("Visits:", selected.visits);
             <button className='add-visit-btn' onClick={handleAddVisit}>Add Visit</button>
             </div>
             <div className='divider'></div>
-        {selected.visits.map((visit)=>(
-        <VisitCard key={visit.id}
+        {visits.map((visit)=>(
+        <VisitCard
+        key = {visit.id}
         visit = {visit}
         trips={trips}
         setTrips={setTrips}
-        selected={selected}
         setSelected={setSelected}
         isEditing={isEditing}
-        setIsEditing={setIsEditing}/>
+        setIsEditing={setIsEditing}
+        setVisits={setVisits}/>
     ))}
         </div>
         <aside className="side-map" aria-hidden={false}>
             <div className="map-inner">
-                <TripMap trips={trips} selected={selected}/>
+                <TripMap visits={visits}/>
             </div>
         </aside>
         </div>

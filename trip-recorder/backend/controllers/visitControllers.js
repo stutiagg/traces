@@ -3,7 +3,8 @@ import supabase from "../config/supabase.js";
 export const getVisits = async (req, res) => {
     const { data, error } = await supabase
     .from("visits")
-    .select("*");
+    .select("*")
+    .eq("trip_id", req.params.tripId);
 
     if (error) return res.status(500).json(error);
 
@@ -24,7 +25,6 @@ export const addVisits = async (req, res) => {
 };
 
 export const deleteVisits = async (req, res) => {
-    console.log(req.params.id);
     const {error} = await supabase
     .from("visits")
     .delete()
@@ -50,6 +50,7 @@ export const updateVisits = async (req, res) => {
     const {data, error} = await supabase
     .from("visits")
     .update({
+        id: Date.now(),
         name,
         cover,
         date,

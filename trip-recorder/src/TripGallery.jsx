@@ -1,10 +1,13 @@
 import TripCard from './TripCard'
 import './TripGallery.css'
+import { useNavigate } from "react-router-dom";
 
-function TripGallery({trips, setSelected, setTrips, setCreateMode, setEditingTrip}){
+function TripGallery({trips, setTrips, setCreateMode, setEditingTrip}){
+
+    const navigate = useNavigate();
 
     function handleCardClick(trip){
-        setSelected(trip);
+        navigate(`/trips/${trip.id}`);
     }
 
     function TripCardRender(){

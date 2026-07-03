@@ -10,14 +10,14 @@ function TripCard({trip, onClick, trips, setTrips, setCreateMode, setEditingTrip
 
     return(
         <div className="trip-card" onClick={onClick}>
-            <img src= { trip.cover } />
+            <img src= { trip.cover_url } />
             <EllipsisVertical className='trip-ellipsis' onClick={(e)=> {e.stopPropagation(); 
                 setDisplayActionMenu(prev => !prev);
                 }}/>
             {displayActionMenu && (<TripActionsMenu trip={trip} trips={trips} setTrips={setTrips} setEditingTrip={setEditingTrip} setCreateMode={setCreateMode}/>)}
             <div className="trip-details">
             <h2 className="trip-name">{trip.name}</h2>
-            <p className="trip-date">{trip.start} - {trip.end}</p>
+            <p className="trip-date">{trip.start_date} - {trip.end_date}</p>
             </div>
         </div>
     )

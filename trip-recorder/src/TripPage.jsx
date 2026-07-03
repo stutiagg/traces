@@ -1,9 +1,24 @@
 import VisitGallery from './VisitGallery';
 import { useState } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
 
 import './TripPage.css';
 
-function TripPage({ selected, setSelected, trips, setTrips }) {
+function TripPage({ trips, setTrips }) {
+
+
+    const { id } = useParams();
+
+    const navigate = useNavigate();
+
+    const selected = trips.find(
+    (trip) => trip.id.toString() === id
+    );
+
+    if (!selected) {
+    return <h2>Trip not found.</h2>;
+    }
+
     const [description, setDescription] = useState(selected.description);
     const [isEditing, setIsEditing] = useState(true);
 
@@ -15,12 +30,7 @@ function TripPage({ selected, setSelected, trips, setTrips }) {
 
             return trip ;
         });
-
-        //console.log(newTrips);
         setTrips(newTrips);
-
-        const newSelected = newTrips.find((trip) => trip.id === selected.id);
-        setSelected(newSelected);
         setIsEditing(false);
     }
 
@@ -58,10 +68,9 @@ function TripPage({ selected, setSelected, trips, setTrips }) {
             </div>
 
             <VisitGallery selected = {selected} 
-            setSelected={setSelected} 
             trips={trips}
             setTrips={setTrips}/>
-            <button onClick={()=>setSelected(null)}>CLOSE PAGE</button>
+            <button onClick={()=> navigate("/")}>CLOSE PAGE</button>
         </div>
     );
 }

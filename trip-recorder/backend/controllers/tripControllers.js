@@ -25,7 +25,6 @@ export const addTrips = async (req, res) => {
 };
 
 export const deleteTrips = async (req, res) => {
-    console.log(req.params.id);
     const {data, error} = await supabase
     .from("trips")
     .delete()
@@ -65,10 +64,6 @@ export const updateTrips = async (req, res) => {
     .eq('id', req.params.id)
     .eq('user_id', req.userId)
     .select();
-
-    if (req.userId !== data) return res.status(403).json({
-        message: "Not authorized to update this trip."
-    });
 
     if (error) return res.status(500).json(error);
 
