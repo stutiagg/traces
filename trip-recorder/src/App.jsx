@@ -21,11 +21,11 @@ function App() {
   const [selected, setSelected] = useState(null);
   const [editingTrip, setEditingTrip] = useState(null);
 
-  const token = localStorage.getItem("token");
+  
 
-  useEffect(() => {
   async function fetchTrips() {
     try {
+      const token = localStorage.getItem("token");
       const response = await API.get("/trips" , {
   headers: {
     Authorization: `Bearer ${token}`,
@@ -36,6 +36,8 @@ function App() {
       console.log(err.response?.data);
     }
   }
+
+  useEffect(() => {
 
   fetchTrips();
 }, []);
@@ -75,7 +77,7 @@ function App() {
       <Route
         path="/login"
         element = {
-          <Login />
+          <Login fetchTrips={fetchTrips}/>
         }
       />
 

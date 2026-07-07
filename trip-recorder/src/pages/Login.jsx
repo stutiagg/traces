@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import API from "../api";
 import { useState } from "react";
 
-function Login(){
+function Login({fetchTrips}){
 
     const [form, setForm] = useState({
             email:"",
@@ -17,6 +17,7 @@ function Login(){
             const response = await API.post('/auth/login', form);
             
             localStorage.setItem("token", response.data.token);
+            await fetchTrips();
             navigate('/');
             
         } catch (err) {

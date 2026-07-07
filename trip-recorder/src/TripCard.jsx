@@ -17,7 +17,15 @@ function TripCard({trip, onClick, trips, setTrips, setCreateMode, setEditingTrip
             {displayActionMenu && (<TripActionsMenu trip={trip} trips={trips} setTrips={setTrips} setEditingTrip={setEditingTrip} setCreateMode={setCreateMode}/>)}
             <div className="trip-details">
             <h2 className="trip-name">{trip.name}</h2>
-            <p className="trip-date">{trip.start_date} - {trip.end_date}</p>
+            <p className="trip-date"> {new Date(trip.start_date).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  })} - {new Date(trip.end_date).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  })}</p>
             </div>
         </div>
     )

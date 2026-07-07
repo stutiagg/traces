@@ -22,11 +22,15 @@ function CreateTripForm({setCreateMode, setTrips, trips, trip, mode}){
         cover_url: "",
         description: ""
     }
+    
+    const [newTrip, setNewTrip] = useState((mode === "edit") ? trip : NewTripCreate);
+    const [uploading, setUploading] = useState(false);
 
    
     async function handleCreateTrip() {
         try{
             const token = localStorage.getItem("token");
+            console.log(newTrip);
             const response = await API.post('/trips', newTrip, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -46,8 +50,6 @@ function CreateTripForm({setCreateMode, setTrips, trips, trip, mode}){
             console.log(err.response?.data);
         }
     }
-
-    const [newTrip, setNewTrip] = useState((mode === "edit") ? trip : NewTripCreate);
 
     // function handleCreateTrip(){
     //     setTrips([...trips, {...newTrip, id: Date.now()}])
@@ -90,27 +92,24 @@ function CreateTripForm({setCreateMode, setTrips, trips, trip, mode}){
 async function saveCover(e) {
   const file = e.target.files[0];
 
-  if (!file) return;
-
   const fileName = `${Date.now()}-${file.name}`;
+
+  setUploading(true);
 
   const { error } = await supabase.storage
     .from("trip-covers")
     .upload(fileName, file);
 
-  if (error) {
-    console.log(error);
-    return;
-  }
-
   const { data } = supabase.storage
     .from("trip-covers")
     .getPublicUrl(fileName);
 
-  setNewTrip((prev) => ({
+
+  setNewTrip(prev => ({
     ...prev,
     cover_url: data.publicUrl,
   }));
+  setUploading(false);
 }
 
     return(
@@ -123,18 +122,21 @@ async function saveCover(e) {
             <input type="text" placeholder="Enter Trip Title" value={newTrip.name} onChange={(e) => setNewTrip({...newTrip, name: e.target.value})}/>
         
             <label>Start Date:</label>
-            <input type ="text" placeholder="Mon YYYY" value={newTrip.start_date} onChange={(e) => setNewTrip({...newTrip, start_date: e.target.value})}/>
+            <input type ="date" placeholder="Mon YYYY" value={newTrip.start_date} onChange={(e) => setNewTrip({...newTrip, start_date: e.target.value})}/>
         
             <label>End Date:</label>
-            <input type ="text" placeholder="Mon YYYY" value={newTrip.end_date} onChange={(e) => setNewTrip({...newTrip, end_date: e.target.value})}/>
+            <input type ="date" placeholder="Mon YYYY" value={newTrip.end_date} onChange={(e) => setNewTrip({...newTrip, end_date: e.target.value})}/>
 
             <label>Cover Picture:</label>
             {/* <input type="file" onChange={(e) => setNewTrip({...newTrip, cover_url: URL.createObjectURL(e.target.files[0])})}></input> */}
-            <input type="file" onChange={(e) => saveCover(e)}></input>
+            <input type="file" onChange={(e) => {
+    console.log("File input changed");
+    saveCover(e);
+  }}></input>
 
             <div className="button-row">
                 <button onClick={()=>setCreateMode(null)}>Close</button>
-                <button onClick={mode === "create" ? handleCreateTrip : handleEditTrip}> {mode.charAt(0).toUpperCase() + mode.slice(1)} Trip</button>
+                <button disabled={uploading} onClick={mode === "create" ? handleCreateTrip : handleEditTrip}> {mode.charAt(0).toUpperCase() + mode.slice(1)} Trip</button>
             </div>
 
 
