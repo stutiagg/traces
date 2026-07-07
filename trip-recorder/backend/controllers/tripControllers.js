@@ -31,9 +31,9 @@ export const deleteTrips = async (req, res) => {
     .eq('id', req.params.id)
     .eq('user_id', req.userId);
 
-    if (req.userId !== data) return res.status(403).json({
-        message: "Not authorized to delete this trip."
-    });
+    // if (req.userId !== data) return res.status(403).json({
+    //     message: "Not authorized to delete this trip."
+    // });
 
     if (error) return res.status(500).json(error);
 

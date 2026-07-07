@@ -14,22 +14,39 @@ function TripMap({ visits }){
     visit.longitude
   ]);
 
-     function MarkerRender(){
-        const MapMarkers = visits.map((visit) => {
+    //  function MarkerRender(){
+    //     const MapMarkers = visits.map((visit) => {
   
-            return (
-            <>
-            <Marker key={visit.id} position={[visit.latitude, visit.longitude]}>
-                <Popup>
-                    {visit.name}
-                </Popup>
-            </ Marker>
-            </>
-            )
-        })
+    //         return (
+    //         <>
+    //         <Marker key={visit.id} position={[visit.latitude, visit.longitude]}>
+    //             <Popup>
+    //                 {visit.name}
+    //             </Popup>
+    //         </ Marker>
+    //         </>
+    //         )
+    //     })
         
-        return MapMarkers
-    }
+    //     return MapMarkers
+    // }
+
+    function MarkerRender() {
+  return visits
+    .filter(
+      (visit) =>
+        visit.latitude != null &&
+        visit.longitude != null
+    )
+    .map((visit) => (
+      <Marker
+        key={visit.id}
+        position={[visit.latitude, visit.longitude]}
+      >
+        <Popup>{visit.name}</Popup>
+      </Marker>
+    ));
+}
 
     return (
           <div id="map">

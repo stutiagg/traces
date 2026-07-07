@@ -27,7 +27,6 @@ function CreateTripForm({setCreateMode, setTrips, trips, trip, mode}){
     async function handleCreateTrip() {
         try{
             const token = localStorage.getItem("token");
-            console.log(newTrip);
             const response = await API.post('/trips', newTrip, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -68,7 +67,6 @@ function CreateTripForm({setCreateMode, setTrips, trips, trip, mode}){
     // }
 
     async function handleEditTrip() {
-        console.log(newTrip);
         try{
             const token = localStorage.getItem("token");
             const id = trip.id;

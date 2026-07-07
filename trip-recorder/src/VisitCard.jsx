@@ -93,6 +93,7 @@ function handleChangeDate(e) {
     //         }
     //         return trip;
     //     })
+    //     console.log(visit);
     //     setTrips(newTrips);
     //     const newSelected = newTrips.find((trip) => trip.id === selected.id);
     //     setSelected(newSelected);
@@ -160,7 +161,7 @@ setVisits((prev) =>
                     setVisitMenu(!visitMenu);
                 }}/>
                 {visitMenu && (
-                    <VisitActionsMenu setIsEditing={setIsEditing} visit={visit} setTrips={setTrips} trips={trips} setSelected={setSelected} selected={selected}/>
+                    <VisitActionsMenu setIsEditing={setIsEditing} visit={visit} setVisits={setVisits}/>
                 )}
                 <div className='visit-details'>
                     {isEditing ? <LocationSearch value={visit.name} type="text" placeholder='Add Location' onChange={(e)=>handleChangeLocation(e)} /> : <div className="field-display">{visit.name}</div>}

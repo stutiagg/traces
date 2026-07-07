@@ -50,7 +50,6 @@ export const updateVisits = async (req, res) => {
     const {data, error} = await supabase
     .from("visits")
     .update({
-        id: Date.now(),
         name,
         cover,
         date,
