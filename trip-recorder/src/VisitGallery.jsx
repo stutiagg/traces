@@ -40,11 +40,10 @@ function VisitGallery({ setSelected, trips, setTrips }){
 
   fetchVisits();
 }, [id]);
-    const [isEditing, setIsEditing] = useState(false);
+    
+const [editingVisitId, setEditingVisitId] = useState(null);
 
     function handleAddVisit(){
-
-        setIsEditing(true);
         
         const newVisit = {
             id: Date.now(),
@@ -54,6 +53,8 @@ function VisitGallery({ setSelected, trips, setTrips }){
             latitude:"",
             longitude:""
         }
+
+        setEditingVisitId(newVisit.id);
 
         setVisits((prev) => [...prev, newVisit]);
     }
@@ -81,8 +82,9 @@ function VisitGallery({ setSelected, trips, setTrips }){
         trips={trips}
         setTrips={setTrips}
         setSelected={setSelected}
-        isEditing={isEditing}
-        setIsEditing={setIsEditing}
+        editingVisitId={editingVisitId}
+        setEditingVisitId={setEditingVisitId}
+
         setVisits={setVisits}/>
     ))}
         </div>

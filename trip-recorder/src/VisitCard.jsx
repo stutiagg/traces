@@ -7,10 +7,11 @@ import LocationSearch from './LocationSearch'
 import { useParams } from 'react-router-dom';
 import API from './api';
 
-function VisitCard({visit, setVisits, setSelected, isEditing, setIsEditing, trips}){
+function VisitCard({visit, setVisits, setSelected, trips, setEditingVisitId, editingVisitId}){
 
     const { id: tripId } = useParams();
     const [visitMenu, setVisitMenu] = useState(false);
+    const isEditing = editingVisitId === visit.id;
 
     function handleChangeCover(e) {
   setVisits((prev) =>
@@ -161,7 +162,7 @@ setVisits((prev) =>
                     setVisitMenu(!visitMenu);
                 }}/>
                 {visitMenu && (
-                    <VisitActionsMenu setIsEditing={setIsEditing} visit={visit} setVisits={setVisits}/>
+                    <VisitActionsMenu setIsEditing={setEditingVisitId} visit={visit} setVisits={setVisits}/>
                 )}
                 <div className='visit-details'>
                     {isEditing ? <LocationSearch value={visit.name} type="text" placeholder='Add Location' onChange={(e)=>handleChangeLocation(e)} /> : <div className="field-display">{visit.name}</div>}
