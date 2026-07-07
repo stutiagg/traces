@@ -2,10 +2,10 @@ import MoreActions from "./MoreActions";
 import API from './api';
 
 
-function VisitActionsMenu({setEditingVisitsId, visit, setVisits}){
+function VisitActionsMenu({setEditingVisitId, visit, setVisits}){
 
     function handleEdit(){
-        setEditingVisitsId(visit.id);
+        setEditingVisitId(visit.id);
     }
 
     async function handleDelete(){

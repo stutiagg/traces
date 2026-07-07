@@ -38,6 +38,7 @@ function LocationSearch({ value, onChange, placeholder }){
                 lang="en"
                 addDetails={true}
                 placeSelect={onPlaceSelected}
+                value={value}
                 // suggestionsChange={onSuggestionsChange} 
                 />
         </GeoapifyContext>

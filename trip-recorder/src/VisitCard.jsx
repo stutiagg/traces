@@ -143,7 +143,7 @@ setVisits((prev) =>
   )
 );
 
-    setIsEditing(false);
+    setEditingVisitId(null);
         }catch(err){
             console.log(err.response?.data);
         }
@@ -162,7 +162,7 @@ setVisits((prev) =>
                     setVisitMenu(!visitMenu);
                 }}/>
                 {visitMenu && (
-                    <VisitActionsMenu setIsEditing={setEditingVisitId} visit={visit} setVisits={setVisits}/>
+                    <VisitActionsMenu setEditingVisitId={setEditingVisitId} visit={visit} setVisits={setVisits}/>
                 )}
                 <div className='visit-details'>
                     {isEditing ? <LocationSearch value={visit.name} type="text" placeholder='Add Location' onChange={(e)=>handleChangeLocation(e)} /> : <div className="field-display">{visit.name}</div>}
