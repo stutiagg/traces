@@ -20,7 +20,7 @@ function App() {
   const [trips, setTrips] = useState([]);
   const [selected, setSelected] = useState(null);
   const [editingTrip, setEditingTrip] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   
 
   async function fetchTrips() {
@@ -32,6 +32,7 @@ function App() {
   },
 }); 
       setTrips(response.data);
+      setLoading(false);
     } catch (err) {
       console.log(err.response?.data);
     }
@@ -70,6 +71,7 @@ function App() {
           <TripPage
             trips={trips}
             setTrips={setTrips}
+            loading={loading}
           />
         }
       />
