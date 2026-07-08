@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './VisitCard.css'
+import supabase from './supabase.js'
 
 import { EllipsisVertical } from 'lucide-react'
 import VisitActionsMenu from './VisitActionsMenu'
@@ -11,19 +12,34 @@ function VisitCard({visit, setVisits, setSelected, trips, setEditingVisitId, edi
 
     const { id: tripId } = useParams();
     const [visitMenu, setVisitMenu] = useState(false);
+    const [visitUploading, setVisitUploading] = useState(false);
     const isEditing = editingVisitId === visit.id;
 
-    function handleChangeCover(e) {
-  setVisits((prev) =>
-    prev.map((vis) =>
-      vis.id === visit.id
-        ? {
-            ...vis,
-            cover: URL.createObjectURL(e.target.files[0]),
-          }
-        : vis
+    async function handleChangeCover(e) {
+       const file = e.target.files[0];
+
+  const fileName = `${Date.now()}-${file.name}`;
+
+  setVisitUploading(true);
+
+  const { error } = await supabase.storage
+    .from("visit-covers")
+    .upload(fileName, file);
+
+  const { data } = supabase.storage
+    .from("visit-covers")
+    .getPublicUrl(fileName);
+
+
+  setVisits(prev =>
+    prev.map(vis =>
+        vis.id === visit.id
+            ? { ...vis, cover: data.publicUrl }
+            : vis
     )
-  );
+);
+  setVisitUploading(false);
+
 }
 
 function handleChangeLocation(e) {
@@ -125,26 +141,46 @@ function handleChangeDate(e) {
         try{
             const token = localStorage.getItem("token");
 
-            const { id, ...visitData } = visit;
+            
+            let response;
+let savedVisit;
 
-            const response = await API.post(`/trips/${tripId}/visits`, visitData, {
-               headers: {
-      Authorization: `Bearer ${token}`,
-    }, 
-            });
+if (visit.temp) {
+    const { id, temp, ...visitData } = visit;
 
-            const savedVisit = response.data[0];
+    response = await API.post(
+        `/trips/${tripId}/visits`,
+        visitData,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+} else {
+    const { id, temp, ...visitData } = visit;
+
+    response = await API.put(
+        `/trips/${tripId}/visits/${id}`,
+        visitData,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+}
+
+savedVisit = response.data[0];
 
 setVisits((prev) =>
-  prev.map((vis) =>
-    vis.id === visit.id
-      ? savedVisit
-      : vis
-  )
+    prev.map((vis) =>
+        vis.id === visit.id ? savedVisit : vis
+    )
 );
 
-    setEditingVisitId(null);
-        }catch(err){
+setEditingVisitId(null);
+}catch(err){
             console.log(err.response?.data);
         }
     }
@@ -154,6 +190,7 @@ setVisits((prev) =>
         <div>
             <div className='card-element'>
                 <div className='cover-wrapper'>
+                  <p>{visit.cover}</p>
                     <img src={visit.cover} className='cover-img'/>
                     {isEditing && <input className='cover-input' type="file" onChange={(e)=>handleChangeCover(e)}/>}
                 </div>
@@ -167,7 +204,7 @@ setVisits((prev) =>
                 <div className='visit-details'>
                     {isEditing ? <LocationSearch value={visit.name} type="text" placeholder='Add Location' onChange={(e)=>handleChangeLocation(e)} /> : <div className="field-display">{visit.name}</div>}
                     {isEditing ? <input value={visit.date} type="text" placeholder='Add Date' onChange={(e)=>handleChangeDate(e)} /> : <div className="field-display">{visit.date}</div>}
-                    {isEditing && <button className="save-btn" onClick={handleSave}>Save</button>}
+                    {isEditing && <button disabled= {visitUploading} className="save-btn" onClick={handleSave}>Save</button>}
                 </div>
                 
             </div>

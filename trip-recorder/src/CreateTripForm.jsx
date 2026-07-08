@@ -129,10 +129,7 @@ async function saveCover(e) {
 
             <label>Cover Picture:</label>
             {/* <input type="file" onChange={(e) => setNewTrip({...newTrip, cover_url: URL.createObjectURL(e.target.files[0])})}></input> */}
-            <input type="file" onChange={(e) => {
-    console.log("File input changed");
-    saveCover(e);
-  }}></input>
+            <input type="file" onChange={(e) => saveCover(e) }></input>
 
             <div className="button-row">
                 <button onClick={()=>setCreateMode(null)}>Close</button>

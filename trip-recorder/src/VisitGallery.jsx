@@ -51,7 +51,8 @@ const [editingVisitId, setEditingVisitId] = useState(null);
             cover:"",
             date:null,
             latitude:"",
-            longitude:""
+            longitude:"",
+            temp: true
         }
 
         setEditingVisitId(newVisit.id);
