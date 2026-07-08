@@ -1,6 +1,8 @@
 import VisitGallery from './VisitGallery';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
+import API from './api';
+
 
 
 import './TripPage.css';
@@ -35,17 +37,39 @@ function TripPage({ trips, setTrips, loading }) {
 
     
 
-    function handleEnter() {
-        const newTrips = trips.map((trip) => {
-            if (trip.id === selected.id) {
-                return { ...trip, description: description };
-            }
+    // function handleEnter() {
+    //     const newTrips = trips.map((trip) => {
+    //         if (trip.id === selected.id) {
+    //             return { ...trip, description: description };
+    //         }
 
-            return trip ;
-        });
-        setTrips(newTrips);
-        setIsEditing(false);
+    //         return trip ;
+    //     });
+    //     setTrips(newTrips);
+    //     setIsEditing(false);
+    // }
+    
+    async function saveDescription(){
+        try{
+            const token = localStorage.getItem("token");
+            const response = await API.put(`/trips/${id}`, {...selected, description: description}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            setIsEditing(false);
+
+            setTrips(prev =>
+    prev.map(trip =>
+        trip.id === selected.id
+            ? response.data[0]
+            : trip
+    )
+);
+        } catch(err) {
+        console.log(err.response?.data);
     }
+}
 
     return (
         <div className="trip-page">
@@ -71,7 +95,7 @@ function TripPage({ trips, setTrips, loading }) {
                     <input
                         type="text"
                         placeholder="Enter the Description"
-                        onKeyDown={(e) => e.key === 'Enter' && handleEnter()}
+                        onKeyDown={(e) => e.key === 'Enter' && saveDescription()}
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
