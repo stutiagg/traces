@@ -79,7 +79,7 @@ function CreateTripForm({setCreateMode, setTrips, trips, trip, mode}){
             })
             setTrips((prev) =>
   prev.map((t) =>
-    t.id === response.data.id ? response.data : t
+    t.id === response.data[0].id ? response.data[0] : t
   )
 );  setCreateMode(null);
             
