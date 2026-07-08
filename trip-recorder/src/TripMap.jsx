@@ -1,6 +1,6 @@
-import "./Map.css"
-import { useState } from "react"
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet'
+import "./TripMap.css"
+import { useState, useEffect } from "react"
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet'
 function TripMap({ visits }){
 
     const positions = visits
@@ -46,11 +46,29 @@ function TripMap({ visits }){
         <Popup>{visit.name}</Popup>
       </Marker>
     ));
+
+}
+
+function FitBounds({ positions }) {
+    const map = useMap();
+
+    useEffect(() => {
+
+        if (positions.length > 0) {
+            map.fitBounds(positions, {
+                padding: [50, 50]
+            });
+
+            map.invalidateSize();
+        }
+    }, [map, positions]);
+    return null;
 }
 
     return (
           <div id="map">
-          <MapContainer center={[36, 138]} zoom={3} scrollWheelZoom={false}>
+          <MapContainer center={[0, 0]} scrollWheelZoom={false}>
+            <FitBounds positions={positions} />
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -1,49 +1,95 @@
 import "./Map.css"
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet'
-function Map({trips}){
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet'
+import API from './api';
+import { useState, useEffect, useMemo } from "react";
 
-function PolylineRender(){
-  const Polylines = trips.map((trip)=>{
-      const positions = trip.visits
-      .filter(                              //filters out visits with invalid entries
-        visit =>
-          visit.location.lat &&
-          visit.location.lon
-      )
-      .map((visit) => [                     //actual mapping of the visits 
-        visit.location.lat,
-        visit.location.lon
-  ]);
+function Map(){
 
-  return <Polyline positions={positions} dashArray="10,10" />
-  })
-  return Polylines
+const [mapData, setMapData] = useState([]);
+
+async function getMap(){
+  try{
+    const token = localStorage.getItem("token");
+    const response = await API.get('/map', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    setMapData(response.data);
+  } catch (err) {
+    console.log(err.response?.data);
+  }
 }
 
-  
+
+useEffect(() => {
+    getMap();
+}, []);
+
+const grouped = useMemo(() => {
+    const grouped = {};
+
+    for (const visit of mapData) {
+        if (!grouped[visit.trip_id]) {
+            grouped[visit.trip_id] = [];
+        }
+
+        grouped[visit.trip_id].push([
+            visit.latitude,
+            visit.longitude
+        ]);
+    }
+
+    return grouped;
+}, [mapData]);
+
+const allPositions = mapData.map(visit => [
+    visit.latitude,
+    visit.longitude
+]);
+
+
+function PolylineRender() {
+    return Object.values(grouped).map((positions, index) => (
+        <Polyline
+            key={index}
+            positions={positions}
+            dashArray="10,10"
+        />
+    ));
+}
 
   function MarkerRender(){
-    const MapMarkers = trips.map((trip) => {
-      const TripMarkers = trip.visits.map((visit) => {
+    const MapMarkers = mapData.map((data) => {
             return (
-            <>
-            <Marker key={visit.id} position={[visit.location.lat, visit.location.lon]}>
+            <Marker key={data.id} position={[data.latitude, data.longitude]}>
                 <Popup>
-                    {visit.location.name}
+                    {data.name}
                 </Popup>
             </ Marker>
-            </>
             ) 
         })
-        return TripMarkers
-    }
-    )  
         return MapMarkers
     }
 
+    function FitBounds({ positions }) {
+    const map = useMap();
+
+    useEffect(() => {
+        if (positions.length > 0) {
+            map.fitBounds(positions, {
+                padding: [50, 50]
+            });
+        }
+    }, [map, positions]);
+
+    return null;
+}
+
     return (
           <div id="map">
-          <MapContainer center={[0, 0]} zoom={1.5} scrollWheelZoom={false}>
+          <MapContainer zoom={1.5} scrollWheelZoom={false}>
+          <FitBounds positions = {allPositions} />
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -56,3 +102,7 @@ function PolylineRender(){
 }
 
 export default Map
+
+// TODO:
+// Modify backend to return map-specific data.
+// Connect frontend to the new endpoint and render markers/polylines.

@@ -14,7 +14,7 @@ const token = localStorage.getItem("token");
 return(
 <>
       <Navbar />
-      {/* <Map trips={trips}/> */}
+      <Map />
       <TripGallery trips={trips} setTrips={setTrips} setCreateMode={setCreateMode} setEditingTrip={setEditingTrip}/>
       
 </>
