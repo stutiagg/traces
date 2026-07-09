@@ -1,5 +1,6 @@
 import "./Sidebar.css"
-import logo from './assets/logo.png'
+import logo from './assets/logo_blue.png'
+import { Plus } from "lucide-react";
 function Sidebar({setCreateMode}){
     return(
         <div className="sidebar">
@@ -9,8 +10,13 @@ function Sidebar({setCreateMode}){
                 <button>Feed</button>
                 <button>Map</button>
                 <div className="add-trip-wrapper">
-                    <button className="add-trip-btn" onClick={() => { setCreateMode('create') }}>ADD TRIP</button>
-                </div>
+    <button
+        className="add-trip-btn"
+        onClick={() => setCreateMode("create")}
+    >
+        <Plus size={24} strokeWidth={2.5} />
+    </button>
+</div>
             </div>
         </div>
     )

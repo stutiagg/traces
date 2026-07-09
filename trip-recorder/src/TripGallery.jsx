@@ -1,6 +1,8 @@
 import TripCard from './TripCard'
 import './TripGallery.css'
 import { useNavigate } from "react-router-dom";
+import './AddTripCard'
+import AddTripCard from './AddTripCard';
 
 function TripGallery({trips, setTrips, setCreateMode, setEditingTrip}){
 
@@ -13,7 +15,7 @@ function TripGallery({trips, setTrips, setCreateMode, setEditingTrip}){
     function TripCardRender(){
     const tripCardArray = trips.map((trip) => 
     {return <TripCard key = {trip.id} trip = {trip} trips={trips} setTrips={setTrips} setCreateMode={setCreateMode} setEditingTrip={setEditingTrip} onClick = {() => handleCardClick(trip)} />})
-
+    
     return tripCardArray
 }
 
@@ -23,6 +25,10 @@ function TripGallery({trips, setTrips, setCreateMode, setEditingTrip}){
           <div className="carousel">
                 <div className="trip-gallery">
                     <TripCardRender />
+                    <AddTripCard
+    empty={trips.length === 0}
+    setCreateMode={setCreateMode}
+/>
                     
                 </div>
                 <div className="overlay"></div>

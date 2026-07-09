@@ -13,10 +13,11 @@
     z-index: 10;
     box-sizing: border-box;
     font-size: 0.95rem;
+    border-right: 1px solid rgba(255,255,255,0.06);
 }
 
 .logo{
-    max-height: 50px;
+    max-height: 60px;
     max-width: 100%;
     width: auto;
     height: auto;
@@ -42,29 +43,41 @@
     font-size: 1rem;
 }
 
-.add-trip-wrapper{
+.add-trip-wrapper {
     margin-top: auto;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1rem;
 }
 
-.add-trip-btn{
-    width: 100%;
-    padding: 0.7rem 0.9rem;
-    border-radius: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background-color: rgba(255, 255, 255, 0.12);
-    color: var(--accent);
-    font-weight: 600;
-    letter-spacing: 0.04em;
+.add-trip-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #38bdf8;
+    color: white;
+
     cursor: pointer;
-    transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
-    font-size: 1rem;
+    transition: transform 0.18s ease,
+                box-shadow 0.18s ease,
+                background-color 0.18s ease;
 }
 
-.add-trip-btn:hover{
-    background-color: rgba(255, 255, 255, 0.18);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+.add-trip-btn:hover {
+
+    background-color: #56c8fb;
+    box-shadow: 0 8px 24px rgba(56, 189, 248, 0.35);
+}
+
+.add-trip-btn:active {
+    transform: scale(0.95);
 }
 
 .profile{
