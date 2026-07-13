@@ -66,7 +66,7 @@ function FitBounds({ positions }) {
 }
 
     return (
-          <div id="map">
+          <div id="map-trip">
           <MapContainer zoom={0.95} center={[35,0]} scrollWheelZoom={false}>
             <FitBounds positions={positions} />
             <TileLayer
