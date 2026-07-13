@@ -13,7 +13,7 @@ const port = 3000;
 app.use(cors({
     origin: [
         "http://localhost:5173",
-        "https://traces-rosy.vercel.app/"
+        "https://traces-rosy.vercel.app"
     ]
 }));
 app.use(express.json());
