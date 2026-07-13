@@ -9,6 +9,7 @@ import mapRoutes from "./routes/mapRoutes.js";
 const app = express();
 const port = 3000;
 
+
 app.use(cors());
 app.use(express.json());
 app.use("/trips", tripRoutes);
@@ -16,6 +17,9 @@ app.use('/auth', authRoutes);
 app.use("/trips/:tripId/visits", visitRoutes);
 app.use('/', mapRoutes);
 
+app.get("/healthz", (req, res) => {
+    res.send("OK");
+});
 
 app.get("/", (req, res) => {
   res.send("Backend running!");
