@@ -190,7 +190,6 @@ setEditingVisitId(null);
         <div>
             <div className='card-element'>
                 <div className='cover-wrapper'>
-                  <p>{visit.cover}</p>
                     <img src={visit.cover} className='cover-img'/>
                     {isEditing && <input className='cover-input' type="file" onChange={(e)=>handleChangeCover(e)}/>}
                 </div>

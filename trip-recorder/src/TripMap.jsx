@@ -66,8 +66,8 @@ function FitBounds({ positions }) {
 }
 
     return (
-          <div id="map">
-          <MapContainer center={[0, 0]} scrollWheelZoom={false}>
+          <div id="map-trip">
+          <MapContainer zoom={0.95} center={[35,0]} scrollWheelZoom={false}>
             <FitBounds positions={positions} />
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

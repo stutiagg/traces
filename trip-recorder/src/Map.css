@@ -5,9 +5,23 @@
     border-radius: var(--radius-lg);
 }
 
+
+
 .leaflet-container{
     height: 100%;
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
 
+}
+
+@media (max-width: 768px) {
+    #map{
+        width: 100% !important;
+        height: 55% !important;
+    }
+
+    .leaflet-container{
+    height: 100% !important;
+
+}
 }

@@ -1,5 +1,5 @@
 import "./Map.css"
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, CircleMarker } from 'react-leaflet'
 import API from './api';
 import { useState, useEffect, useMemo } from "react";
 
@@ -71,7 +71,6 @@ function PolylineRender() {
         })
         return MapMarkers
     }
-
     function FitBounds({ positions }) {
     const map = useMap();
 
@@ -88,8 +87,8 @@ function PolylineRender() {
 
     return (
           <div id="map">
-          <MapContainer zoom={1.5} scrollWheelZoom={false}>
-          <FitBounds positions = {allPositions} />
+          <MapContainer zoom={0.95} center={[35,0]} scrollWheelZoom={false}>
+          {allPositions && <FitBounds positions = {allPositions} />}
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
