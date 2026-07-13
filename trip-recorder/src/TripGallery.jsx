@@ -25,10 +25,10 @@ function TripGallery({trips, setTrips, setCreateMode, setEditingTrip}){
           <div className="carousel">
                 <div className="trip-gallery">
                     <TripCardRender />
-                    <AddTripCard
-    empty={trips.length === 0}
+                    {trips.length === 0 && <AddTripCard
+    empty={trips.length == 0}
     setCreateMode={setCreateMode}
-/>
+/>}
                     
                 </div>
                 <div className="overlay"></div>

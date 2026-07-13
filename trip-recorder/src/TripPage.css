@@ -12,6 +12,15 @@
     margin: 0.75rem 0;
 }
 
+@media (max-width: 768px) {
+    .trip-page{
+        padding: 0;
+        gap: 0.5rem;
+    }
+
+
+}
+
 .dates{
     font-weight: 400;
     font-size: 0.95rem;
@@ -111,10 +120,14 @@
 
 @media (max-width: 780px) {
     .trip-page{
-        padding: 1rem;
+        padding: 0rem;
     }
 
     .header-img{
         height: 180px;
+    }
+
+    .description-box{
+        margin: 0px;
     }
 }

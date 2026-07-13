@@ -21,6 +21,12 @@
   gap: 0.75rem;
 }
 
+@media (max-width: 768px) {
+    .signup-form{
+        width: min(400px, 90vw, calc(100vw - 2rem));
+    }
+}
+
 .signup-form > div:first-child {
   font-size: 1rem;
   font-weight: 700;

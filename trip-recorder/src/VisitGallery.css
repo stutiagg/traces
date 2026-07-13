@@ -11,6 +11,8 @@
     border: 1px solid var(--border);
 }
 
+
+
 .divider{
     border-top: 1px solid rgba(148, 163, 184, 0.15);
     margin: 0.5rem 0;
@@ -46,12 +48,6 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
 }
 
-@media (max-width: 780px) {
-    .visit-gallery{
-        padding: 1rem;
-    }
-}
-
 /* Wrapper to place the gallery and the side map next to each other */
 .visit-gallery-wrapper{
     display: flex;
@@ -79,12 +75,24 @@
     background-color: rgba(255,255,255,0.02);
 }
 
+
 @media (max-width: 780px) {
-    .visit-gallery-wrapper{
+    .visit-gallery-wrapper {
         flex-direction: column;
+        margin: 0;
     }
-    .side-map{
+
+    .side-map {
+        order: -1;
+        width: 100%;
+        flex: none;
+        min-width: 0;
         height: 220px;
-        min-width: auto;
+        align-self: stretch;
+    }
+
+    .visit-gallery {
+        width: 100%;
     }
 }
+
