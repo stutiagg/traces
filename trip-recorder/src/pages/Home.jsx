@@ -9,13 +9,14 @@ function Home({
   setTrips,
   setCreateMode,
   setEditingTrip,
+  onLogout,
 }) {
 
 const token = localStorage.getItem("token");
 
 return(
 <>
-      <Navbar />
+      <Navbar onLogout={onLogout} />
       <Map />
       <TripGallery trips={trips} setTrips={setTrips} setCreateMode={setCreateMode} setEditingTrip={setEditingTrip}/>
       
