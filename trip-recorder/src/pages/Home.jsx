@@ -9,15 +9,28 @@ function Home({
   setTrips,
   setCreateMode,
   setEditingTrip,
+  onLogout,
+  tripStatus,
+  tripError,
+  onRetryTrips,
 }) {
-
-const token = localStorage.getItem("token");
 
 return(
 <>
-      <Navbar />
+      <Navbar onLogout={onLogout} />
       <Map />
-      <TripGallery trips={trips} setTrips={setTrips} setCreateMode={setCreateMode} setEditingTrip={setEditingTrip}/>
+      {tripStatus === "loading" && (
+        <p className="trip-data-state" role="status">Loading trips...</p>
+      )}
+      {tripStatus === "error" && (
+        <div className="trip-data-state trip-data-error" role="alert">
+          <p>{tripError}</p>
+          <button type="button" onClick={onRetryTrips}>Try again</button>
+        </div>
+      )}
+      {tripStatus === "success" && (
+        <TripGallery trips={trips} setTrips={setTrips} setCreateMode={setCreateMode} setEditingTrip={setEditingTrip}/>
+      )}
       
       <div className="add-trip-wrapper">
     <button

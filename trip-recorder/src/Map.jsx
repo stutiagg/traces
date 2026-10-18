@@ -6,25 +6,44 @@ import { useState, useEffect, useMemo } from "react";
 function Map(){
 
 const [mapData, setMapData] = useState([]);
+const [mapStatus, setMapStatus] = useState("loading");
+const [mapError, setMapError] = useState("");
+const [retryCount, setRetryCount] = useState(0);
 
-async function getMap(){
+async function getMap(signal){
   try{
     const token = localStorage.getItem("token");
     const response = await API.get('/map', {
+      signal,
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
+    if (signal.aborted) return;
+
     setMapData(response.data);
+    setMapStatus(response.data.length === 0 ? "empty" : "success");
   } catch (err) {
-    console.log(err.response?.data);
+    if (err.code !== "ERR_CANCELED") {
+      console.log(err.response?.data);
+      setMapError("Unable to load the map. Please try again.");
+      setMapStatus("error");
+    }
   }
 }
 
+function retryMap() {
+  setMapStatus("loading");
+  setMapError("");
+  setRetryCount((count) => count + 1);
+}
 
 useEffect(() => {
-    getMap();
-}, []);
+    const controller = new AbortController();
+    void getMap(controller.signal);
+
+    return () => controller.abort();
+}, [retryCount]);
 
 const grouped = useMemo(() => {
     const grouped = {};
@@ -87,6 +106,19 @@ function PolylineRender() {
 
     return (
           <div id="map">
+          {mapStatus === "loading" && (
+            <div className="map-data-state" role="status">Loading map...</div>
+          )}
+          {mapStatus === "error" && (
+            <div className="map-data-state map-data-error" role="alert">
+              <p>{mapError}</p>
+              <button type="button" onClick={retryMap}>Try again</button>
+            </div>
+          )}
+          {mapStatus === "empty" && (
+            <div className="map-data-state" role="status">No mapped visits yet.</div>
+          )}
+          {mapStatus === "success" && (
           <MapContainer zoom={0.95} center={[35,0]} scrollWheelZoom={false}>
           {allPositions && <FitBounds positions = {allPositions} />}
             <TileLayer
@@ -96,6 +128,7 @@ function PolylineRender() {
             <PolylineRender />
             <MarkerRender />
           </MapContainer>
+          )}
         </div>
     )
 }

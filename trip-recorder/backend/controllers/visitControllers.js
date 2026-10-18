@@ -25,12 +25,20 @@ export const addVisits = async (req, res) => {
 };
 
 export const deleteVisits = async (req, res) => {
-    const {error} = await supabase
+    const {data, error} = await supabase
     .from("visits")
     .delete()
-    .eq('id', req.params.id);
+    .eq('id', req.params.id)
+    .eq('trip_id', req.params.tripId)
+    .select("id");
 
     if (error) return res.status(500).json(error);
+
+    if (!data?.length) {
+        return res.status(404).json({
+            message: "Visit not found"
+        });
+    }
 
     res.status(200).json({
         message: "Visit deleted sucessfully"
@@ -43,8 +51,7 @@ export const updateVisits = async (req, res) => {
         cover,
         date,
         latitude,
-        longitude,
-        trip_id
+        longitude
         } = req.body;
 
     const {data, error} = await supabase
@@ -54,13 +61,19 @@ export const updateVisits = async (req, res) => {
         cover,
         date,
         latitude,
-        longitude,
-        trip_id
+        longitude
     })
     .eq('id', req.params.id)
+    .eq('trip_id', req.params.tripId)
     .select();
 
     if (error) return res.status(500).json(error);
+
+    if (!data?.length) {
+        return res.status(404).json({
+            message: "Visit not found"
+        });
+    }
 
     res.status(201).json(data);
 }

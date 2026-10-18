@@ -2,7 +2,7 @@ import "./Navbar.css";
 import Logout from "./pages/Logout";
 import { useState } from "react";
 
-function Navbar() {
+function Navbar({onLogout}) {
     const [logoutBtn, setLogoutBtn] = useState(false);
 
     return (
@@ -15,7 +15,7 @@ function Navbar() {
 
                     {logoutBtn && (
                         <div className="logout-menu">
-                            <Logout />
+                            <Logout onLogout={onLogout} />
                         </div>
                     )}
                 </div>

@@ -7,7 +7,7 @@ import API from './api';
 
 import './TripPage.css';
 
-function TripPage({ trips, setTrips, loading }) {
+function TripPage({ trips, setTrips, tripStatus, tripError, onRetryTrips }) {
 
 
     const { id } = useParams();
@@ -27,8 +27,17 @@ function TripPage({ trips, setTrips, loading }) {
     }
 }, [selected]);
 
-     if(loading){
-        return <h2>Loading...</h2>;
+     if (tripStatus === "loading" || tripStatus === "idle") {
+        return <h2 role="status">Loading...</h2>;
+    }
+
+    if (tripStatus === "error") {
+        return (
+            <div className="trip-load-state" role="alert">
+                <p>{tripError}</p>
+                <button type="button" onClick={onRetryTrips}>Try again</button>
+            </div>
+        );
     }
 
     if (!selected) {
@@ -104,7 +113,7 @@ function TripPage({ trips, setTrips, loading }) {
                 )}
             </div>
 
-            <VisitGallery selected = {selected} 
+            <VisitGallery key={id} selected = {selected}
             trips={trips}
             setTrips={setTrips}/>
             <button onClick={()=> navigate("/")}>CLOSE PAGE</button>
