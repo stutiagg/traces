@@ -13,13 +13,13 @@ function VisitGallery({ setSelected, trips, setTrips }){
     (trip) => trip.id.toString() === id
     );
 
-    if (!selected) {
-    return <h2>Trip not found.</h2>;
-    }
-
     const [visits, setVisits] = useState([]);
+    const [visitStatus, setVisitStatus] = useState("loading");
+    const [visitError, setVisitError] = useState("");
+    const [retryCount, setRetryCount] = useState(0);
 
     useEffect(() => {
+  const controller = new AbortController();
   async function fetchVisits() {
     try {
       const token = localStorage.getItem("token");
@@ -27,21 +27,35 @@ function VisitGallery({ setSelected, trips, setTrips }){
       const response = await API.get(
         `/trips/${id}/visits`,
         {
+          signal: controller.signal,
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
+      if (controller.signal.aborted) return;
+
       setVisits(response.data);
+      setVisitStatus("success");
     } catch (err) {
-      console.log(err.response?.data);
+      if (err.code !== "ERR_CANCELED") {
+        console.log(err.response?.data);
+        setVisitError("Unable to load visits. Please try again.");
+        setVisitStatus("error");
+      }
     }
   }
 
-  fetchVisits();
-}, [id]);
+  void fetchVisits();
+
+  return () => controller.abort();
+}, [id, retryCount]);
     
 const [editingVisitId, setEditingVisitId] = useState(null);
+
+    if (!selected) {
+        return <h2>Trip not found.</h2>;
+    }
 
     function handleAddVisit(){
         
@@ -60,6 +74,12 @@ const [editingVisitId, setEditingVisitId] = useState(null);
         setVisits((prev) => [...prev, newVisit]);
     }
 
+    function retryVisits() {
+        setVisitError("");
+        setVisitStatus("loading");
+        setRetryCount((count) => count + 1);
+    }
+
     // function MapRender(){
     //     const MapMarkers = selected.visits.map((visit) => {
     //         return <TripMap name={visit.location.name} lat={visit.location.lat} lon={visit.location.lon}/>
@@ -73,9 +93,21 @@ const [editingVisitId, setEditingVisitId] = useState(null);
         <div className='visit-gallery'>
             <div className='visit-gallery-header'>
             <h2>Visit Gallery</h2>
-            <button className='add-visit-btn' onClick={handleAddVisit}>Add Visit</button>
+            <button className='add-visit-btn' onClick={handleAddVisit} disabled={visitStatus !== "success"}>Add Visit</button>
             </div>
             <div className='divider'></div>
+        {visitStatus === "loading" && (
+            <p role="status">Loading visits...</p>
+        )}
+        {visitStatus === "error" && (
+            <div role="alert">
+                <p>{visitError}</p>
+                <button type="button" onClick={retryVisits}>Try again</button>
+            </div>
+        )}
+        {visitStatus === "success" && visits.length === 0 && (
+            <p>No visits yet. Add a visit to start your journey.</p>
+        )}
         {visits.map((visit)=>(
         <VisitCard
         key = {visit.id}

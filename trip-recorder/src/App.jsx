@@ -24,9 +24,10 @@ function App() {
   const [trips, setTrips] = useState([]);
   const [selected, setSelected] = useState(null);
   const [editingTrip, setEditingTrip] = useState(null);
-  const [loading, setLoading] = useState(
-    () => Boolean(localStorage.getItem("token"))
+  const [tripStatus, setTripStatus] = useState(
+    () => localStorage.getItem("token") ? "loading" : "idle"
   );
+  const [tripError, setTripError] = useState("");
   const tripRequestId = useRef(0);
   const tripRequestController = useRef(null);
 
@@ -40,6 +41,9 @@ function App() {
     const controller = new AbortController();
     tripRequestController.current = controller;
     const requestId = ++tripRequestId.current;
+    setTripStatus("loading");
+    setTripError("");
+
     try {
       const response = await API.get("/trips" , {
   signal: controller.signal,
@@ -52,7 +56,7 @@ function App() {
       }
 
       setTrips(response.data);
-      setLoading(false);
+      setTripStatus("success");
     } catch (err) {
       if (requestId === tripRequestId.current && err.code !== "ERR_CANCELED") {
         if (err.response?.status === 401) {
@@ -61,7 +65,8 @@ function App() {
         }
 
         console.log(err.response?.data);
-        setLoading(false);
+        setTripError("Unable to load trips. Please try again.");
+        setTripStatus("error");
       }
     } finally {
       if (requestId === tripRequestId.current) {
@@ -83,8 +88,13 @@ function App() {
   }, [isAuthenticated]);
 
   function handleLogin() {
-    setIsAuthenticated(true);
-    setLoading(true);
+    setTripError("");
+    setTripStatus("loading");
+    if (isAuthenticated) {
+      void fetchTrips();
+    } else {
+      setIsAuthenticated(true);
+    }
   }
 
   function handleLogout() {
@@ -97,7 +107,8 @@ function App() {
     setSelected(null);
     setEditingTrip(null);
     setCreateMode(null);
-    setLoading(false);
+    setTripStatus("idle");
+    setTripError("");
   }
 
 
@@ -120,6 +131,9 @@ function App() {
               setCreateMode={setCreateMode}
               setEditingTrip={setEditingTrip}
               onLogout={handleLogout}
+              tripStatus={tripStatus}
+              tripError={tripError}
+              onRetryTrips={fetchTrips}
             />
           ) : (
             <Welcome />
@@ -134,7 +148,9 @@ function App() {
             <TripPage
               trips={trips}
               setTrips={setTrips}
-              loading={loading}
+              tripStatus={tripStatus}
+              tripError={tripError}
+              onRetryTrips={fetchTrips}
             />
           ) : (
             <Navigate to="/" replace />

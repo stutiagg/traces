@@ -1,3 +1,22 @@
+.trip-data-state {
+    margin: 1rem 0;
+    color: var(--text-muted);
+    text-align: left;
+}
+
+.trip-data-error {
+    color: var(--danger);
+}
+
+.trip-data-error button {
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--bg-tertiary);
+    color: var(--text);
+    cursor: pointer;
+}
 
 .add-trip-wrapper {
     width: 100%;
