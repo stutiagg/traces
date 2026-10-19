@@ -18,7 +18,9 @@ function Home({
 return(
 <>
       <Navbar onLogout={onLogout} />
-      <Map />
+      <div className="home-map-layout">
+        <Map />
+      </div>
       {tripStatus === "loading" && (
         <p className="trip-data-state" role="status">Loading trips...</p>
       )}

@@ -1,3 +1,16 @@
+.home-map-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: stretch;
+}
+
+@media (max-width: 640px) {
+    .home-map-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
 .trip-data-state {
     margin: 1rem 0;
     color: var(--text-muted);
