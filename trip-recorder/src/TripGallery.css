@@ -8,32 +8,44 @@
     border-radius: 1rem;
     padding-top: 0.5rem;
     padding-bottom: 0.25rem;
+    scrollbar-width: none;
 }
 
 .trip-gallery::-webkit-scrollbar {
-    display: none; 
+    display: none;
 }
 
 .carousel{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     position: relative;
     border-radius: 1rem;
 }
 
-.overlay{
-position: absolute;
-right: 0;
-top: 0;
+.trip-gallery-progress-track {
+    position: relative;
+    align-self: center;
+    width: clamp(100px, 18%, 180px);
+    height: 6px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.14);
+}
 
-width: 150px;
-height: 100%;
+.trip-gallery-progress-thumb {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: rgba(148, 163, 184, 0.62);
+    transition: left 100ms linear;
+}
 
-background: linear-gradient(
-    to left,
-    var(--bg),
-    transparent
-);
+@media (prefers-reduced-motion: reduce) {
+    .trip-gallery-progress-thumb {
+        transition: none;
+    }
 }
 
 .recent-trips{
