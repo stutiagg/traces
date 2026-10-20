@@ -1,13 +1,184 @@
 .home-map-layout {
+    --home-map-height: clamp(280px, 56vh, 640px);
+    --home-map-height: clamp(280px, 56svh, 640px);
     display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
-    gap: 1.25rem;
+    grid-template-columns: minmax(0, 3fr) minmax(250px, 1fr);
+    gap: var(--space-5);
     align-items: stretch;
+    min-width: 0;
 }
 
-@media (max-width: 640px) {
+.journey-overview {
+    min-width: 0;
+    height: var(--home-map-height);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: 1.35rem;
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    border-radius: var(--radius-card);
+    background: linear-gradient(145deg, #111b28, var(--surface-panel) 68%, #0e1722);
+}
+
+.journey-overview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+}
+
+.journey-overview-header h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-align: left;
+}
+
+.journey-overview-header p {
+    margin-top: 0.25rem;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    text-align: left;
+}
+
+.journey-overview-header > svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    flex: 0 0 auto;
+    color: var(--accent-cyan);
+}
+
+.journey-metrics {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    gap: 0.65rem;
+    min-height: 0;
+}
+
+.journey-metric {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.7rem;
+    flex: 1 1 0;
+    min-height: 4rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid rgba(148, 163, 184, 0.07);
+    border-radius: 0.85rem;
+    background: rgba(30, 48, 67, 0.56);
+    text-align: left;
+}
+
+.journey-metric > svg {
+    width: 1.15rem;
+    height: 1.15rem;
+    justify-self: center;
+    color: var(--accent-cyan);
+}
+
+.journey-metric-copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.12rem;
+}
+
+.journey-metric-copy > strong {
+    color: var(--text);
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+}
+
+.journey-metric-copy > span {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+.journey-quote {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.journey-quote > svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    flex: 0 0 auto;
+    margin-top: 0.1rem;
+    color: rgba(56, 189, 248, 0.7);
+}
+
+.journey-quote > p {
+    color: var(--text-h);
+    font-size: 0.78rem;
+    font-style: italic;
+    line-height: 1.45;
+}
+
+@media (max-width: 980px) {
     .home-map-layout {
         grid-template-columns: minmax(0, 1fr);
+    }
+
+    .journey-overview {
+        height: auto;
+        min-height: 0;
+        padding: var(--space-4);
+    }
+
+    .journey-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.55rem;
+    }
+
+    .journey-metric {
+        grid-template-columns: 1.25rem minmax(0, 1fr);
+        align-items: start;
+        gap: 0.45rem;
+        min-height: 5rem;
+        padding: 0.65rem;
+    }
+
+    .journey-metric > svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .journey-metric-copy > strong {
+        font-size: 1.15rem;
+    }
+
+    .journey-metric-copy > span {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 520px) {
+    .home-map-layout {
+        gap: var(--space-4);
+    }
+
+    .journey-overview {
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .journey-metrics {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .journey-metric {
+        grid-template-columns: 1.25rem minmax(0, 1fr);
+        align-items: center;
+        min-height: 3.5rem;
     }
 }
 
@@ -39,6 +210,7 @@
     bottom: 1rem;
     right: 2rem;
     z-index: 9999;
+    pointer-events: none;
 }
 
 .add-trip-btn {
@@ -51,10 +223,12 @@
     justify-content: center;
     align-items: center;
 
-    background-color: #38bdf8;
+    background-color: var(--accent-cyan);
     color: white;
+    box-shadow: 0 8px 24px rgba(56, 189, 248, 0.2);
 
     cursor: pointer;
+    pointer-events: auto;
     transition: transform 0.18s ease,
                 box-shadow 0.18s ease,
                 background-color 0.18s ease;
@@ -72,6 +246,17 @@
 
 .add-trip-btn:active{
     background-color: rgba(255, 255, 255, 0.18);
+}
+
+.add-trip-btn:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .add-trip-btn {
+        transition: none;
+    }
 }
 
 @media (max-width: 780px) {

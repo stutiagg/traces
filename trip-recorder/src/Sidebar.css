@@ -6,15 +6,15 @@
     position: fixed;
     top: 0;
     left: 0;
-    background: linear-gradient(180deg, #111827 0%, var(--bg-secondary) 42%, #0b0f16 100%);
+    background: linear-gradient(180deg, #101720 0%, var(--bg-secondary) 55%, #0b0f16 100%);
     width: 188px;
     height: 100vh;
     gap: 10px;
-    z-index: 10;
+    z-index: 10001;
     box-sizing: border-box;
     font-size: 0.95rem;
-    border-right: 1px solid rgba(148, 163, 184, 0.12);
-    box-shadow: 8px 0 28px rgba(0, 0, 0, 0.16);
+    border-right: 1px solid var(--border-subtle);
+    box-shadow: 8px 0 28px rgba(0, 0, 0, 0.12);
 }
 
 @media (max-width: 768px) {
@@ -43,37 +43,91 @@
     width: 100%;
 }
 
-.side-btns > button{
+.sidebar-account {
+    width: 100%;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.side-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     background-color: transparent;
     border: 1px solid transparent;
     font-weight: 500;
-    color: var(--text);
-    text-align: left;
+    color: var(--text-muted);
     padding: 0.7rem 0.75rem;
     border-radius: 0.75rem;
     font-size: 1rem;
-    cursor: pointer;
+    text-decoration: none;
     transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
-.side-btns > button:hover {
+.side-link > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: 0 0 1.25rem;
+    color: currentColor;
+}
+
+.side-link:hover {
     background-color: rgba(255, 255, 255, 0.07);
     border-color: rgba(148, 163, 184, 0.12);
     color: #fff;
     transform: translateX(2px);
 }
 
-.side-btns > button:focus-visible {
-    outline: 2px solid #38bdf8;
+.side-link.active {
+    background-color: rgba(56, 189, 248, 0.12);
+    color: var(--accent-cyan, #38bdf8);
+}
+
+.side-link.active::after {
+    position: absolute;
+    top: 0.55rem;
+    right: 0.35rem;
+    bottom: 0.55rem;
+    width: 3px;
+    border-radius: 999px;
+    background: currentColor;
+    content: "";
+}
+
+.side-link:focus-visible {
+    outline: var(--focus-ring, 2px solid #38bdf8);
     outline-offset: 2px;
 }
 
+.side-link-badge {
+    margin-left: auto;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-h);
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+}
+
 @media (prefers-reduced-motion: reduce) {
-    .side-btns > button {
+    .side-link {
         transition: none;
     }
 
-    .side-btns > button:hover {
+    .side-link:hover {
         transform: none;
     }
 }

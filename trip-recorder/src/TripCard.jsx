@@ -4,6 +4,7 @@ import './TripCard.css'
 import TripActionsMenu from './TripActionsMenu'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import TripCover from './TripCover'
 function TripCard({trip, trips, setTrips, setCreateMode, setEditingTrip}){
 
     
@@ -12,9 +13,12 @@ function TripCard({trip, trips, setTrips, setCreateMode, setEditingTrip}){
     return(
         <article className="trip-card">
             <Link className="trip-card-link" to={`/trips/${trip.id}`}>
-            <img
+            <TripCover
                 src={trip.cover_url}
                 alt={trip.name ? `Cover photo for ${trip.name}` : "Trip cover photo"}
+                tripId={trip.id}
+                fallbackVariant="gallery"
+                className="trip-card-cover"
             />
             <div className="trip-details">
                 <h2 className="trip-name">{trip.name}</h2>

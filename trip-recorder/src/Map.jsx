@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, CircleMarker 
 import API from './api';
 import { useState, useEffect, useMemo } from "react";
 
-function Map(){
+function Map({ onVisitsLoaded }){
 
 const [mapData, setMapData] = useState([]);
 const [mapStatus, setMapStatus] = useState("loading");
@@ -22,6 +22,7 @@ async function getMap(signal){
     if (signal.aborted) return;
 
     setMapData(response.data);
+    onVisitsLoaded?.(response.data);
     setMapStatus(response.data.length === 0 ? "empty" : "success");
   } catch (err) {
     if (err.code !== "ERR_CANCELED") {

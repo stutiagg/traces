@@ -1,7 +1,8 @@
 import VisitGallery from './VisitGallery';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import API from './api';
+import TripCover from './TripCover';
 
 
 
@@ -18,14 +19,10 @@ function TripPage({ trips, setTrips, tripStatus, tripError, onRetryTrips }) {
     (trip) => trip.id.toString() === id
     );
 
-    const [description, setDescription] = useState("");
-    const [isEditing, setIsEditing] = useState(true);
-
-    useEffect(() => {
-    if (selected) {
-        setDescription(selected.description);
-    }
-}, [selected]);
+    const [descriptionDraft, setDescriptionDraft] = useState("");
+    const [isEditing, setIsEditing] = useState(false);
+    const [isSavingDescription, setIsSavingDescription] = useState(false);
+    const [descriptionError, setDescriptionError] = useState("");
 
      if (tripStatus === "loading" || tripStatus === "idle") {
         return <h2 role="status">Loading...</h2>;
@@ -58,16 +55,17 @@ function TripPage({ trips, setTrips, tripStatus, tripError, onRetryTrips }) {
     //     setIsEditing(false);
     // }
     
-    async function saveDescription(){
+    async function saveDescription(event){
+        event.preventDefault();
+        setDescriptionError("");
+        setIsSavingDescription(true);
         try{
             const token = localStorage.getItem("token");
-            const response = await API.put(`/trips/${id}`, {...selected, description: description}, {
+            const response = await API.put(`/trips/${id}`, {...selected, description: descriptionDraft}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
-            setIsEditing(false);
-
             setTrips(prev =>
     prev.map(trip =>
         trip.id === selected.id
@@ -75,15 +73,28 @@ function TripPage({ trips, setTrips, tripStatus, tripError, onRetryTrips }) {
             : trip
     )
 );
+            setIsEditing(false);
         } catch(err) {
-        console.log(err.response?.data);
+            console.log(err.response?.data);
+            setDescriptionError("Unable to save the description. Please try again.");
+        } finally {
+            setIsSavingDescription(false);
+        }
     }
-}
+
+    function cancelDescriptionEdit() {
+        setDescriptionError("");
+        setIsEditing(false);
+    }
 
     return (
         <div className="trip-page">
             <div className="header">
-                <img className="header-img" src={selected.cover_url} alt="cover" />
+                <TripCover
+                    className="header-img"
+                    src={selected.cover_url}
+                    alt={selected.name ? `Cover photo for ${selected.name}` : "Trip cover photo"}
+                />
 
                 <div>
                     <div className="trip-title">
@@ -97,19 +108,45 @@ function TripPage({ trips, setTrips, tripStatus, tripError, onRetryTrips }) {
             </div>
 
             <div className="description-box">
-                <h3 className="section-heading">Description</h3>
+                <div className="description-heading-row">
+                    <h3 className="section-heading">Description</h3>
+                    {!isEditing && (
+                        <button
+                            className="description-action"
+                            type="button"
+                            onClick={() => {
+                                setDescriptionDraft(selected.description ?? "");
+                                setDescriptionError("");
+                                setIsEditing(true);
+                            }}
+                        >
+                            Edit
+                        </button>
+                    )}
+                </div>
                 <div className="divider"></div>
 
                 {isEditing ? (
-                    <input
-                        type="text"
-                        placeholder="Enter the Description"
-                        onKeyDown={(e) => e.key === 'Enter' && saveDescription()}
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
+                    <form className="description-form" onSubmit={saveDescription}>
+                        <label htmlFor="trip-description">Trip description</label>
+                        <textarea
+                            id="trip-description"
+                            value={descriptionDraft}
+                            placeholder="Enter the description"
+                            onChange={(e) => setDescriptionDraft(e.target.value)}
+                        />
+                        {descriptionError && <p className="description-error" role="alert">{descriptionError}</p>}
+                        <div className="description-actions">
+                            <button className="description-action" type="submit" disabled={isSavingDescription}>
+                                {isSavingDescription ? "Saving..." : "Save"}
+                            </button>
+                            <button className="description-action" type="button" onClick={cancelDescriptionEdit} disabled={isSavingDescription}>
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
                 ) : (
-                    <div className="description">{description}</div>
+                    <div className="description">{selected.description ?? ""}</div>
                 )}
             </div>
 

@@ -2,12 +2,13 @@
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
-    gap: 1rem;
-    margin: 0.25rem 0rem;
-    margin-left: 0;
+    gap: var(--space-4);
+    width: 100%;
+    max-width: 100%;
+    margin: var(--space-2) 0 0;
     border-radius: 1rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.25rem;
+    padding: var(--space-2) 4.5rem var(--space-2) 0;
+    scroll-padding-right: 4.5rem;
     scrollbar-width: none;
 }
 
@@ -27,7 +28,7 @@
     align-self: center;
     width: clamp(100px, 18%, 180px);
     height: 6px;
-    margin-top: 0.5rem;
+    margin-top: 0.35rem;
     overflow: hidden;
     border-radius: 999px;
     background: rgba(148, 163, 184, 0.14);
@@ -49,8 +50,17 @@
 }
 
 .recent-trips{
-    margin: 10px 0 0 0;
-    font-weight: 400;
-    font-size: 18px;
+    margin: var(--space-5) 0 0;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: -0.02em;
     text-align: start;
+}
+
+@media (max-width: 520px) {
+    .trip-gallery {
+        padding-right: 4rem;
+        scroll-padding-right: 4rem;
+    }
 }

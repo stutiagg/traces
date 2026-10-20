@@ -9,7 +9,7 @@
   flex: 1;
   min-width: 0;
   margin-left: 188px;
-  padding: 10px;
+  padding: clamp(0.75rem, 1.5vw, 1.5rem);
   position: relative;
 }
 

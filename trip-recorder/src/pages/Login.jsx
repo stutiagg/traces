@@ -12,16 +12,18 @@ function Login({onLogin}){
     
     const [error, setError] = useState("");
 
-    async function handleLogin() {
+    async function handleLogin(event) {
+        event.preventDefault();
+        setError("");
         try{
             const response = await API.post('/auth/login', form);
             
             localStorage.setItem("token", response.data.token);
-            onLogin();
+            onLogin(form.email);
             navigate('/');
             
         } catch (err) {
-            setError(err.response?.data?.message);
+            setError(err.response?.data?.message || "Unable to log in. Please try again.");
         }
     };
 
@@ -29,24 +31,24 @@ function Login({onLogin}){
     return(
         <>
         <div className="login-form-overlay">
-        <div className="login-form">
+        <form className="login-form" onSubmit={handleLogin} aria-labelledby="login-heading">
            
-            <div>LOGIN</div>
+            <h1 id="login-heading">LOGIN</h1>
 
-            <label>Email:</label>
-            <input type="text" placeholder="Enter Email" value={form.email} onChange={(e) => setForm({...form, email: e.target.value})} />
+            <label htmlFor="login-email">Email:</label>
+            <input id="login-email" type="email" autoComplete="email" required placeholder="Enter Email" value={form.email} onChange={(e) => setForm({...form, email: e.target.value})} />
         
-            <label>Password:</label>
-            <input type ="password" placeholder="Enter password" value={form.password} onChange={(e) => setForm({...form, password: e.target.value})}/>
+            <label htmlFor="login-password">Password:</label>
+            <input id="login-password" type="password" autoComplete="current-password" required placeholder="Enter password" value={form.password} onChange={(e) => setForm({...form, password: e.target.value})}/>
         
-            {error && <p> {error} </p>}
+            {error && <p className="form-error" role="alert">{error}</p>}
             <div className="button-row">
-                <button onClick={() => navigate('/register')}>Signup</button>  {/* path to Signup page */}
-                <button onClick={handleLogin}>Login</button>  {/* path to Home page */}
+                <button type="button" onClick={() => navigate('/register')}>Signup</button>
+                <button type="submit">Login</button>
             </div>
 
 
-        </div>
+        </form>
         </div>
         </>
     )

@@ -1,26 +1,12 @@
 import "./Navbar.css";
-import Logout from "./pages/Logout";
-import { useState } from "react";
+import AccountMenu from "./AccountMenu";
 
-function Navbar({onLogout}) {
-    const [logoutBtn, setLogoutBtn] = useState(false);
-
+function Navbar({ userEmail, onLogout }) {
     return (
-        <div className="navbar">
-            <div className="profile">
-                <div className="profile-menu">
-                    <span onClick={() => setLogoutBtn(!logoutBtn)}>
-                        P
-                    </span>
-
-                    {logoutBtn && (
-                        <div className="logout-menu">
-                            <Logout onLogout={onLogout} />
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
+        <header className="navbar">
+            <span className="navbar-brand">TRACES</span>
+            <AccountMenu userEmail={userEmail} onLogout={onLogout} placement="mobile" />
+        </header>
     );
 }
 
