@@ -3,9 +3,8 @@ import "./CreateTripForm.css"
 import { useState } from "react"
 import API from "./api";
 import supabase from "./supabase";
-import { useParams } from 'react-router-dom';
 
-function CreateTripForm({setCreateMode, setTrips, trips, trip, mode}){
+function CreateTripForm({setCreateMode, setTrips, trip, mode}){
 
     // const NewTripEdit = {
     //     name: trip?.name || "",
@@ -25,9 +24,11 @@ function CreateTripForm({setCreateMode, setTrips, trips, trip, mode}){
     
     const [newTrip, setNewTrip] = useState((mode === "edit") ? trip : NewTripCreate);
     const [uploading, setUploading] = useState(false);
+    const [coverUploadError, setCoverUploadError] = useState("");
 
    
-    async function handleCreateTrip() {
+    async function handleCreateTrip(event) {
+        event.preventDefault();
         try{
             const token = localStorage.getItem("token");
             console.log(newTrip);
@@ -68,7 +69,8 @@ function CreateTripForm({setCreateMode, setTrips, trips, trip, mode}){
     //     setCreateMode(null);
     // }
 
-    async function handleEditTrip() {
+    async function handleEditTrip(event) {
+        event.preventDefault();
         try{
             const token = localStorage.getItem("token");
             const id = trip.id;
@@ -91,53 +93,67 @@ function CreateTripForm({setCreateMode, setTrips, trips, trip, mode}){
 
 async function saveCover(e) {
   const file = e.target.files[0];
+  if (!file) return;
 
   const fileName = `${Date.now()}-${file.name}`;
 
   setUploading(true);
+  setCoverUploadError("");
 
-  const { error } = await supabase.storage
-    .from("trip-covers")
-    .upload(fileName, file);
+  try {
+    const { error } = await supabase.storage
+      .from("trip-covers")
+      .upload(fileName, file);
 
-  const { data } = supabase.storage
-    .from("trip-covers")
-    .getPublicUrl(fileName);
+    if (error) throw error;
 
+    const { data } = supabase.storage
+      .from("trip-covers")
+      .getPublicUrl(fileName);
 
-  setNewTrip(prev => ({
-    ...prev,
-    cover_url: data.publicUrl,
-  }));
-  setUploading(false);
+    if (!data?.publicUrl) {
+      throw new Error("Storage did not return a public cover URL.");
+    }
+
+    setNewTrip(prev => ({
+      ...prev,
+      cover_url: data.publicUrl,
+    }));
+  } catch (error) {
+    console.error("Trip cover upload failed:", error);
+    setCoverUploadError("Unable to upload the cover photo. Please try again.");
+  } finally {
+    setUploading(false);
+  }
 }
 
     return(
         <div className="trip-form-overlay">
-        <div className="trip-form">
+        <form className="trip-form" onSubmit={mode === "create" ? handleCreateTrip : handleEditTrip} aria-labelledby="trip-form-heading">
            
-            <div>{mode.toUpperCase()} TRIP</div>
+            <h2 id="trip-form-heading">{mode.toUpperCase()} TRIP</h2>
 
-            <label>Trip Name:</label>
-            <input type="text" placeholder="Enter Trip Title" value={newTrip.name} onChange={(e) => setNewTrip({...newTrip, name: e.target.value})}/>
+            <label htmlFor="trip-name">Trip Name:</label>
+            <input id="trip-name" name="name" type="text" placeholder="Enter Trip Title" value={newTrip.name} onChange={(e) => setNewTrip({...newTrip, name: e.target.value})}/>
         
-            <label>Start Date:</label>
-            <input type ="date" placeholder="Mon YYYY" value={newTrip.start_date} onChange={(e) => setNewTrip({...newTrip, start_date: e.target.value})}/>
+            <label htmlFor="trip-start-date">Start Date:</label>
+            <input id="trip-start-date" name="start_date" type="date" value={newTrip.start_date} onChange={(e) => setNewTrip({...newTrip, start_date: e.target.value})}/>
         
-            <label>End Date:</label>
-            <input type ="date" placeholder="Mon YYYY" value={newTrip.end_date} onChange={(e) => setNewTrip({...newTrip, end_date: e.target.value})}/>
+            <label htmlFor="trip-end-date">End Date:</label>
+            <input id="trip-end-date" name="end_date" type="date" value={newTrip.end_date} onChange={(e) => setNewTrip({...newTrip, end_date: e.target.value})}/>
 
-            <label>Cover Picture:</label>
+            <label htmlFor="trip-cover">Cover Picture:</label>
             {/* <input type="file" onChange={(e) => setNewTrip({...newTrip, cover_url: URL.createObjectURL(e.target.files[0])})}></input> */}
-            <input type="file" onChange={(e) => saveCover(e) }></input>
+            <input id="trip-cover" name="cover" type="file" onChange={(e) => saveCover(e) }></input>
+            {coverUploadError && <p className="cover-upload-error" role="alert">{coverUploadError}</p>}
 
             <div className="button-row">
-                <button onClick={()=>setCreateMode(null)}>Close</button>
-                <button disabled={uploading} onClick={mode === "create" ? handleCreateTrip : handleEditTrip}> {mode.charAt(0).toUpperCase() + mode.slice(1)} Trip</button>
+                <button type="button" onClick={()=>setCreateMode(null)}>Close</button>
+                <button type="submit" disabled={uploading}> {mode.charAt(0).toUpperCase() + mode.slice(1)} Trip</button>
             </div>
 
 
-        </div>
+        </form>
         </div>
     )
 }

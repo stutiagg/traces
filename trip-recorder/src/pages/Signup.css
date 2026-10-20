@@ -27,12 +27,14 @@
     }
 }
 
-.signup-form > div:first-child {
+.signup-form > h1 {
   font-size: 1rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--text);
+  text-align: center;
+  margin: 0;
 }
 
 .signup-form label {
@@ -56,9 +58,19 @@
   box-sizing: border-box;
 }
 
-.signup-form input:focus {
+.signup-form input:focus-visible {
   border-color: rgba(56, 189, 248, 0.75);
   box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.08);
+}
+
+.signup-form button:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
+.signup-form .form-error {
+  color: var(--danger);
+  text-align: left;
 }
 
 .signup-form .button-row {

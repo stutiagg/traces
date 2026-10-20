@@ -9,6 +9,11 @@
   /* Borders */
   --border: #2A3A55;
   --border-hover: #3A4D6B;
+  --border-subtle: rgba(148, 163, 184, 0.12);
+  --surface-panel: #101720;
+  --surface-raised: #151e29;
+  --accent-cyan: #38bdf8;
+  --focus-ring: 2px solid var(--accent-cyan);
 
   /* Text */
   --text: #F8FAFC;
@@ -31,6 +36,12 @@
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
+  --radius-card: 16px;
+
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -66,7 +77,7 @@ body {
   max-width: 100%; */
   margin: 0 auto;
   text-align: center;
-  border-inline: 1px solid var(--border);
+  border-inline: 0;
   /* min-height: 100svh; */
   display: flex;
   flex-direction: column;

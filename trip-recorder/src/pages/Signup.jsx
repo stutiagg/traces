@@ -13,13 +13,14 @@ function Signup() {
 
     const [error, setError] = useState("");
 
-    async function handleSignup() {
+    async function handleSignup(event) {
+        event.preventDefault();
         setError("");
         try{
             await API.post('/auth/register', form);
             navigate('/login');
     } catch (err) {
-        setError( err.response?.data?.message);
+        setError(err.response?.data?.message || "Unable to sign up. Please try again.");
     }
     };
 
@@ -27,24 +28,24 @@ function Signup() {
     return(
         <>
         <div className="signup-form-overlay">
-        <div className="signup-form">
+        <form className="signup-form" onSubmit={handleSignup} aria-labelledby="signup-heading">
            
-            <div>SIGNUP</div>
+            <h1 id="signup-heading">SIGNUP</h1>
 
-            <label>Email:</label>
-            <input type="text" placeholder="Enter Email" value = {form.email} onChange={(e) => setForm({...form, email: e.target.value})}/>
+            <label htmlFor="signup-email">Email:</label>
+            <input id="signup-email" type="email" autoComplete="email" required placeholder="Enter Email" value = {form.email} onChange={(e) => setForm({...form, email: e.target.value})}/>
         
-            <label>Password:</label>
-            <input type ="password" placeholder="Enter password" value = {form.password} onChange={(e) => setForm({...form, password: e.target.value})}/>
+            <label htmlFor="signup-password">Password:</label>
+            <input id="signup-password" type="password" autoComplete="new-password" required placeholder="Enter password" value = {form.password} onChange={(e) => setForm({...form, password: e.target.value})}/>
         
-            {error && <p>{error}</p>}
+            {error && <p className="form-error" role="alert">{error}</p>}
             <div className="button-row">
-                <button onClick={() => navigate('/login')}>Login</button>  {/* path to Login page */}
-                <button onClick={handleSignup}>Signup</button>
+                <button type="button" onClick={() => navigate('/login')}>Login</button>
+                <button type="submit">Signup</button>
             </div>
 
 
-        </div>
+        </form>
         </div>
         </>
     )
